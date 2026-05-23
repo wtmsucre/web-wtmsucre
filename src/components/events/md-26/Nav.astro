@@ -1,0 +1,52 @@
+---
+import wtmLogo from "@/assets/events/md-26/wtm-logo.png"
+---
+
+<nav
+  class="sticky top-0 z-50 border-b border-[#0F1A2B]/10"
+  style="background: rgba(255,246,244,0.88); backdrop-filter: blur(10px);"
+>
+  <div
+    class="max-w-6xl mx-auto px-7 py-3.5 flex items-center justify-between gap-6"
+  >
+    <a
+      href="#inicio"
+      class="flex items-center gap-3 no-underline text-[#0F1A2B]"
+    >
+      <img src={wtmLogo.src} alt="WTM Sucre" class="h-10 lg:h-12 w-auto block" />
+      <div>
+        <div
+          class="font-google font-medium font-bold tracking-tight leading-tight text-sm lg:text-lg"
+        >
+          Women Techmakers
+        </div>
+        <div
+          class="font-mono text-[12px] lg:text-sm text-[#1F6FE5] tracking-[0.18em] uppercase -mt-0.5"
+        >
+          Sucre · Bolivia
+        </div>
+      </div>
+    </a>
+
+    <div class="hidden md:flex items-center gap-7 lg:gap-9">
+      <a
+        href="#inicio"
+        class="text-sm lg:text-base text-[#3C4A5E] font-medium hover:text-[#1F6FE5] transition-colors no-underline"
+      >
+        Inicio
+      </a>
+      <a
+        href="#actividad"
+        class="text-sm lg:text-base text-[#3C4A5E] font-medium hover:text-[#1F6FE5] transition-colors no-underline"
+      >
+        Actividad
+      </a>
+      <a
+        href="#sobre"
+        class="text-sm lg:text-base text-[#3C4A5E] font-medium hover:text-[#1F6FE5] transition-colors no-underline"
+      >
+        Sobre
+      </a>
+    </div>
+  </div>
+</nav>
