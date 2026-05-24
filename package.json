@@ -56,6 +56,6 @@
     "@biomejs/biome": "2.4.3",
     "baseline-browser-mapping": "^2.10.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7"
+    "lint-staged": "^17.0.5"
   }
 }
