@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets"
+
 interface Props {
   index: number
   nombre: string
@@ -15,6 +17,7 @@ const num = String(index).padStart(2, "0")
 
 const rotations = ["-2deg", "1.5deg", "-1deg", "2deg", "-1.5deg", "1deg"]
 const rotate = rotations[(index - 1) % rotations.length]
+const isPriority = index <= 4
 ---
 
 <div
@@ -40,16 +43,18 @@ const rotate = rotations[(index - 1) % rotations.length]
     <span class="absolute top-2 right-3 text-xl z-10" aria-hidden="true">📍</span>
 
     {foto ? (
-      <img
+      <Image
         src={foto}
         alt={`Foto de ${nombre} con`}
-        width="400"
-        height="400"
-        loading="lazy"
+        width={400}
+        height={400}
+        sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+        loading={isPriority ? "eager" : "lazy"}
         decoding="async"
+        fetchpriority={isPriority ? "high" : "auto"}
         class="absolute inset-0 w-full h-full object-cover p-2 rounded-tl-2xl rounded-tr-2xl"
       />
-    ) : ( 
+    ) : (
       <div class="absolute inset-0 flex items-end justify-center pb-4">
         <div class="flex items-end gap-1">
           <svg width="64" height="64" viewBox="0 0 36 36" aria-hidden="true">
