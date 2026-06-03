@@ -13,9 +13,9 @@ interface Props {
 const {
   sections = [
     { href: "#inicio", label: "Inicio" },
-    { href: "#beneficios", label: "Beneficios" },
+    // { href: "#beneficios", label: "Beneficios" },
     { href: "#eventos", label: "Eventos" },
-    { href: "#testimonios", label: "Testimonios" },
+    // { href: "#testimonios", label: "Testimonios" },
     { href: "#quienes-somos", label: "¿Quiénes somos?" },
   ],
 } = Astro.props
@@ -43,15 +43,6 @@ const {
         ))
       }
     </nav>
-
-    <!-- Desktop CTA -->
-    <a
-      href="#unete"
-      class="hidden md:inline-flex font-grotesk font-medium items-center gap-2 bg-[#FFBA00] hover:bg-[#FFC93C] text-[#0A1229] lg:text-base px-5 py-2.5 rounded-full transition-colors no-underline"
-    >
-      Únete
-      <span aria-hidden="true">→</span>
-    </a>
 
     <!-- Mobile Hamburger Button -->
     <button
