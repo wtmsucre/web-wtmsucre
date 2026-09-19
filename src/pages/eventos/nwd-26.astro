@@ -3,6 +3,7 @@ import Contador from "@/components/events/nwd-26/Contador.astro"
 import Footer from "@/components/events/nwd-26/Footer.astro"
 import Header from "@/components/events/nwd-26/Header.astro"
 import Hero from "@/components/events/nwd-26/Hero.astro"
+import PixelBlocks from "@/components/events/nwd-26/PixelBlocks.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 ---
 
@@ -12,9 +13,12 @@ import BaseLayout from "@/layout/BaseLayout.astro"
   theme="light"
 >
   <Header />
-  <main class="flex-1 bg-[#F6F8FC]">
-    <Hero />
-    <Contador />
+  <main class="relative flex-1 bg-[#FAFCFF]">
+    <PixelBlocks />
+    <div class="relative z-[1] -mt-[100vh]">
+      <Hero />
+      <Contador />
+    </div>
   </main>
   <Footer />
 </BaseLayout>
