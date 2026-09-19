@@ -1,0 +1,20 @@
+---
+import Contador from "@/components/events/nwd-26/Contador.astro"
+import Footer from "@/components/events/nwd-26/Footer.astro"
+import Header from "@/components/events/nwd-26/Header.astro"
+import Hero from "@/components/events/nwd-26/Hero.astro"
+import BaseLayout from "@/layout/BaseLayout.astro"
+---
+
+<BaseLayout
+  title="WTM Sucre · En Ellas Late Bolivia"
+  description="Mujeres que impulsan. Sábado 11 de octubre en la Facultad de Ciencias y Tecnología, Sucre. Women Techmakers Sucre."
+  theme="light"
+>
+  <Header />
+  <main class="flex-1 bg-[#F6F8FC]">
+    <Hero />
+    <Contador />
+  </main>
+  <Footer />
+</BaseLayout>
