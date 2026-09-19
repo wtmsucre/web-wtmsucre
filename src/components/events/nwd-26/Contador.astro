@@ -1,7 +1,7 @@
 ---
 import { Countdown } from "@/components/events/nwd-26/Countdown"
 
-const eventDate = new Date("2026-10-11T09:00:00-04:00")
+const eventDate = new Date("2026-10-10T14:00:00-04:00")
 const initialTime = eventDate.getTime() - Date.now()
 ---
 
@@ -36,9 +36,6 @@ const initialTime = eventDate.getTime() - Date.now()
 
       <Countdown initialTime={initialTime} targetDate={eventDate} client:load />
 
-      <p class="font-google text-center text-sm text-[#BBD9FA] mt-[26px]">
-        11 de octubre · 09:00 — 18:00 · Facultad de Ciencias y Tecnología, Sucre
-      </p>
     </div>
   </div>
 </section>

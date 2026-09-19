@@ -1,5 +1,6 @@
 ---
-import cholita from "@/assets/events/nwd-26/cholita-tech.webp"
+import cholita from "@/assets/events/nwd-26/cholita.png"
+import late from "@/assets/events/nwd-26/late.png"
 import CTALink from "@/components/CTALink.astro"
 ---
 
@@ -24,11 +25,14 @@ import CTALink from "@/components/CTALink.astro"
       >
         EN ELLAS
       </h1>
-      <div
-        class="font-script text-[#10A7BC] leading-none -mt-1.5 -mb-2"
-        style="font-size: clamp(56px, 9vw, 120px);"
-      >
-        late
+      <div class="flex justify-center md:justify-start py-2">
+        <img
+          src={late.src}
+          width={late.width}
+          height={late.height}
+          alt="late"
+          class="hero-heartbeat"
+        />
       </div>
       <div
         class="font-google font-bold tracking-[0.26em] sm:tracking-[0.34em] text-[#1355CC]"
@@ -61,8 +65,9 @@ import CTALink from "@/components/CTALink.astro"
               Sábado
             </div>
             <div class="font-google font-bold text-[15px] text-[#0B2E6B]">
-              11 de Octubre
+              10 de Octubre
             </div>
+            <div class="font-google text-xs text-[#6B86B4]">14:00 h</div>
           </div>
         </div>
 
@@ -107,55 +112,149 @@ import CTALink from "@/components/CTALink.astro"
 
     <!-- Illustration -->
     <div class="relative z-2 min-w-0 flex justify-center">
-      <div
-        class="relative w-full max-w-[260px] sm:max-w-[340px] md:max-w-[460px] flex items-center justify-center"
-        style="aspect-ratio: 0.64;"
+      <cholita-animation
+        class="hero-illustration relative w-full max-w-[260px] sm:max-w-[340px] md:max-w-[460px]"
       >
-        <!-- Soft halo -->
-        <div
-          class="absolute rounded-full"
-          style="inset: 6% 8%; background: radial-gradient(circle at 40% 35%, #DCEEFB, #EAF4FD 60%, rgba(234,244,253,0) 72%);"
-          aria-hidden="true"
-        >
+        <div class="hero-bubbles" aria-hidden="true">
+          <span class="hero-bubble hero-bubble-sky"></span>
+          <span class="hero-bubble hero-bubble-blue"></span>
+          <span class="hero-bubble hero-bubble-turquoise"></span>
+          <span class="hero-bubble hero-bubble-mist"></span>
         </div>
-        <!-- Orbit ring -->
-        <div
-          class="absolute inset-[2%] rounded-full border-2 border-[#1355CC]/30"
-          style="transform: rotate(-18deg) scaleY(0.62);"
-          aria-hidden="true"
-        >
-        </div>
-        <!-- Masked photo -->
-        <div
-          class="absolute inset-0 overflow-hidden"
-          style="
-            transform: scaleX(-1);
-            -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 48%, #000 70%, transparent 96%);
-            mask-image: radial-gradient(ellipse 60% 70% at 50% 48%, #000 70%, transparent 96%);
-          "
-        >
-          <img
-            src={cholita.src}
-            alt="Ilustración de cholita tecnóloga"
-            class="absolute inset-0 w-full h-full object-cover object-top"
-          />
-        </div>
-        <!-- Bottom fade (mobile only) -->
-        <div
-          class="absolute inset-x-0 bottom-0 h-1/4 md:hidden"
-          style="background: linear-gradient(180deg, rgba(250,252,255,0) 0%, #FAFCFF 100%);"
-          aria-hidden="true"
-        >
-        </div>
-      </div>
+        <canvas class="hero-comet hero-comet-back" data-comet-back aria-hidden="true"></canvas>
+        <img
+          src={cholita.src}
+          width={cholita.width}
+          height={cholita.height}
+          alt="Ilustración de cholita tecnóloga"
+          fetchpriority="high"
+          class="hero-cholita"
+        />
+        <canvas class="hero-comet hero-comet-front" data-comet-front aria-hidden="true"></canvas>
+      </cholita-animation>
     </div>
   </div>
 </section>
 
-<style is:global>
-  @import url("https://fonts.googleapis.com/css2?family=Yellowtail&display=swap");
 
-  .font-script {
-    font-family: "Yellowtail", cursive;
+
+
+<style>
+  .hero-heartbeat {
+    display: block;
+    width: clamp(140px, 20vw, 280px);
+    max-width: 88%;
+    height: auto;
+    transform-origin: center;
+    animation: hero-heartbeat 3s ease-in-out infinite;
+  }
+
+  @keyframes hero-heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-heartbeat { animation: none; }
+  }
+
+  .hero-illustration {
+    display: block;
+    isolation: isolate;
+    aspect-ratio: 5 / 6;
+  }
+
+  .hero-bubbles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .hero-bubbles {
+    z-index: -1;
+  }
+
+  .hero-bubble {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+  }
+
+  .hero-bubble-sky {
+    width: 96%;
+    aspect-ratio: 1;
+    top: 12%;
+    left: 0;
+    background: #c3eaf7;
+  }
+
+  .hero-bubble-blue {
+    width: 65%;
+    aspect-ratio: 1;
+    top: 17%;
+    right: 1%;
+    background: #a9d4f8;
+    opacity: 0.65;
+  }
+
+  .hero-bubble-turquoise {
+    width: 64%;
+    height: 34%;
+    right: -3%;
+    bottom: 4%;
+    background: #8de0e5;
+    transform: rotate(-24deg);
+  }
+
+  .hero-bubble-mist {
+    width: 43%;
+    aspect-ratio: 1;
+    left: -2%;
+    bottom: 5%;
+    background: #d9f3fa;
+    opacity: 0.8;
+  }
+
+  .hero-comet {
+    position: absolute;
+    inset: -20%;
+    width: 140%;
+    height: 140%;
+    pointer-events: none;
+  }
+
+  .hero-comet-back { z-index: 0; }
+  .hero-comet-front { z-index: 2; }
+
+  .hero-cholita {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: auto;
   }
 </style>
+
+
+<script>
+  import { animateCholita } from "@/scripts/cholita-animation.js"
+
+  class CholitaAnimation extends HTMLElement {
+    private cleanup?: () => void
+
+    connectedCallback() {
+      this.cleanup?.()
+      this.cleanup = animateCholita(this)
+    }
+
+    disconnectedCallback() {
+      this.cleanup?.()
+    }
+  }
+
+  if (!customElements.get("cholita-animation")) {
+    customElements.define("cholita-animation", CholitaAnimation)
+  }
+</script>

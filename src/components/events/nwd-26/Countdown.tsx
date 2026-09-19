@@ -32,11 +32,11 @@ export const Countdown = ({
   ]
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-[22px] max-w-[820px] mx-auto">
+    <div className="grid grid-cols-4 gap-1.5 sm:gap-3 lg:gap-[22px] max-w-[820px] mx-auto">
       {units.map(unit => (
         <div
           key={unit.label}
-          className="relative rounded-[18px] border border-white/16 bg-white/7 px-2.5 pt-[22px] pb-[18px] text-center overflow-hidden"
+          className="relative min-w-0 rounded-xl sm:rounded-[18px] border border-white/16 bg-white/7 px-1 sm:px-2.5 pt-[18px] sm:pt-[22px] pb-3 sm:pb-[18px] text-center overflow-hidden"
         >
           {/* Striped ribbon */}
           <div
@@ -49,11 +49,11 @@ export const Countdown = ({
           />
           <div
             className="font-google font-extrabold text-white leading-none tabular-nums"
-            style={{ fontSize: "clamp(38px, 6vw, 60px)" }}
+            style={{ fontSize: "clamp(26px, 7vw, 60px)" }}
           >
             {zeroPad(unit.value)}
           </div>
-          <div className="font-google mt-2 text-[11px] tracking-[0.28em] uppercase text-[#A8CDF7]">
+          <div className="font-google mt-2 text-[8px] min-[375px]:text-[9px] sm:text-[11px] tracking-[0.04em] sm:tracking-[0.28em] uppercase text-[#A8CDF7]">
             {unit.label}
           </div>
         </div>
