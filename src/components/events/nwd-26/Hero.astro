@@ -9,7 +9,7 @@ import CTALink from "@/components/CTALink.astro"
 >
   <!-- Pixel block decoration (top-left) -->
   <div
-    class="absolute top-[90px] -left-14 w-[150px] h-[150px] grid grid-cols-2 grid-rows-2 opacity-55 pointer-events-none"
+    class="absolute top-[90px] -left-14 w-[150px] h-[150px] hidden md:grid grid-cols-2 grid-rows-2 opacity-55 pointer-events-none"
     aria-hidden="true"
   >
     <div class="bg-[#1355CC]"></div>
@@ -20,7 +20,7 @@ import CTALink from "@/components/CTALink.astro"
 
   <!-- Pixel block decoration (bottom-right) -->
   <div
-    class="absolute bottom-0 right-0 w-[200px] h-[200px] grid grid-cols-3 grid-rows-3 opacity-85 pointer-events-none"
+    class="absolute bottom-0 right-0 w-[200px] h-[200px] hidden md:grid grid-cols-3 grid-rows-3 opacity-85 pointer-events-none"
     aria-hidden="true"
   >
     <div></div><div></div><div class="bg-[#0B3FA0]"></div>
@@ -32,9 +32,9 @@ import CTALink from "@/components/CTALink.astro"
     class="relative z-2 max-w-[1180px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-8 lg:gap-10"
   >
     <!-- Copy -->
-    <div class="max-w-[640px] min-w-0">
+    <div class="max-w-[640px] min-w-0 text-center md:text-left">
       <p
-        class="font-google font-semibold uppercase tracking-[0.42em] text-[#1355CC] mb-1.5"
+        class="font-google font-semibold uppercase tracking-[0.28em] sm:tracking-[0.42em] text-[#1355CC] mb-1.5"
         style="font-size: clamp(13px, 1.6vw, 17px);"
       >
         Mujeres que impulsan
@@ -52,15 +52,15 @@ import CTALink from "@/components/CTALink.astro"
         late
       </div>
       <div
-        class="font-google font-bold tracking-[0.34em] text-[#1355CC]"
+        class="font-google font-bold tracking-[0.26em] sm:tracking-[0.34em] text-[#1355CC]"
         style="font-size: clamp(20px, 3.2vw, 40px);"
       >
         BOLIVIA
       </div>
-      <div class="w-[120px] h-[7px] rounded bg-[#F6BE3A] mt-[18px] mb-[26px]"></div>
+      <div class="w-[120px] h-[7px] rounded bg-[#F6BE3A] mt-[18px] mb-[26px] mx-auto md:mx-0"></div>
 
       <!-- Date & place -->
-      <div class="flex flex-wrap items-center gap-4 sm:gap-6 lg:gap-10 mt-8 mb-[30px]">
+      <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 lg:gap-10 mt-8 mb-[30px] text-left">
         <div class="flex items-center gap-3">
           <svg
             width="42"
@@ -87,7 +87,7 @@ import CTALink from "@/components/CTALink.astro"
           </div>
         </div>
 
-        <div class="w-px h-10 bg-[#D5E1F5]"></div>
+        <div class="hidden sm:block w-px h-10 bg-[#D5E1F5]"></div>
 
         <div class="flex items-center gap-3">
           <svg
@@ -117,7 +117,7 @@ import CTALink from "@/components/CTALink.astro"
       </div>
 
       <div
-        class="inline-flex items-center px-[34px] py-[18px] rounded-full bg-[#1A73E8] hover:bg-[#0B3FA0] text-white font-google font-semibold tracking-[0.14em] uppercase transition-colors [&_a]:no-underline [&_a]:text-white"
+        class="inline-flex items-center justify-center w-full sm:w-auto px-[34px] py-4 sm:py-[18px] rounded-full bg-[#1A73E8] hover:bg-[#0B3FA0] text-white font-google font-semibold tracking-[0.14em] uppercase transition-colors [&_a]:no-underline [&_a]:text-white"
         style="font-size: clamp(14px, 1.8vw, 17px); box-shadow: 0 14px 30px rgba(26,115,232,0.32);"
       >
         <CTALink server:defer eventSlug="nwd-26">
@@ -129,7 +129,7 @@ import CTALink from "@/components/CTALink.astro"
     <!-- Illustration -->
     <div class="relative z-2 min-w-0 flex justify-center">
       <div
-        class="relative w-full max-w-[460px] flex items-center justify-center"
+        class="relative w-full max-w-[260px] sm:max-w-[340px] md:max-w-[460px] flex items-center justify-center"
         style="aspect-ratio: 0.64;"
       >
         <!-- Soft halo -->
@@ -160,6 +160,13 @@ import CTALink from "@/components/CTALink.astro"
             alt="Ilustración de cholita tecnóloga"
             class="absolute inset-0 w-full h-full object-cover object-top"
           />
+        </div>
+        <!-- Bottom fade (mobile only) -->
+        <div
+          class="absolute inset-x-0 bottom-0 h-1/4 md:hidden"
+          style="background: linear-gradient(180deg, rgba(250,252,255,0) 0%, #FAFCFF 100%);"
+          aria-hidden="true"
+        >
         </div>
       </div>
     </div>
