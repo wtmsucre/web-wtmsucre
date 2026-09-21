@@ -1,0 +1,41 @@
+---
+import { Countdown } from "@/components/events/nwd-26/Countdown"
+
+const eventDate = new Date("2026-10-10T14:00:00-04:00")
+const initialTime = eventDate.getTime() - Date.now()
+---
+
+<section
+  id="contador"
+  class="relative z-[1] px-4 sm:px-6 lg:px-14 pb-10 md:pb-16 lg:pb-[72px]"
+>
+  <div
+    class="max-w-[1180px] mx-auto rounded-3xl md:rounded-[28px] overflow-hidden bg-[#0B3FA0]"
+    style="box-shadow: 0 26px 60px rgba(11,46,107,0.22);"
+  >
+    <!-- Striped ribbon -->
+    <div
+      class="h-[26px]"
+      style="background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.85) 0 5px, transparent 5px 11px), repeating-linear-gradient(-45deg, rgba(255,255,255,0.85) 0 5px, transparent 5px 11px), repeating-linear-gradient(90deg, #1355CC 0 22px, #10A7BC 22px 44px, #F6BE3A 44px 56px, #0B3FA0 56px 78px);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="px-4 sm:px-8 lg:px-12 py-7 md:py-10 lg:py-12">
+      <p
+        class="font-google text-center text-xs tracking-[0.34em] uppercase text-[#8FC3F5] mb-1"
+      >
+        Faltan
+      </p>
+      <h2
+        class="font-google font-bold text-center text-white mb-7"
+        style="font-size: clamp(22px, 3vw, 34px);"
+      >
+        para que empiece el encuentro
+      </h2>
+
+      <Countdown initialTime={initialTime} targetDate={eventDate} client:load />
+
+    </div>
+  </div>
+</section>

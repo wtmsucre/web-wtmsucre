@@ -1,0 +1,98 @@
+---
+import wtmLogo from "@/assets/events/wtm-home/wtm-logo-white.png"
+import SocialIcons from "@/components/SocialIcons.astro"
+
+const links = [
+  { href: "#inicio", label: "Evento" },
+  { href: "/registro/nwd-26", label: "Registrarme" },
+]
+---
+
+<footer
+  class="bg-[#08245A] text-[#C6DBF7] px-4 sm:px-6 lg:px-14 pt-9 md:pt-12 lg:pt-[58px] pb-7"
+>
+  <div
+    class="max-w-[1180px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[30px]"
+  >
+    <!-- Brand -->
+    <div>
+      <a
+        href="#inicio"
+        class="flex items-center gap-3 mb-3.5 no-underline text-white"
+      >
+        <img src={wtmLogo.src} alt="WTM Sucre" class="h-9 w-auto block" />
+        <div class="leading-[1.15]">
+          <div class="font-google font-semibold text-sm text-white">
+            Women Techmakers
+          </div>
+          <div class="font-google text-[11px] tracking-[2px] uppercase text-[#7FA7DC]">
+            Sucre
+          </div>
+        </div>
+      </a>
+      <p class="font-google text-[13px] leading-[1.6] max-w-[280px] m-0">
+        Comunidad que impulsa la visibilidad y el crecimiento de las mujeres en
+        tecnología en Bolivia.
+      </p>
+    </div>
+
+    <!-- Evento -->
+    <div>
+      <h4
+        class="font-google text-xs tracking-[0.24em] uppercase text-[#7FA7DC] mb-3 m-0"
+      >
+        Evento
+      </h4>
+      <div class="flex flex-col gap-2 font-google text-[13.5px]">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              class="text-[#C6DBF7] hover:text-[#10A7BC] transition-colors no-underline"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Dónde -->
+    <div>
+      <h4
+        class="font-google text-xs tracking-[0.24em] uppercase text-[#7FA7DC] mb-3 m-0"
+      >
+        Dónde
+      </h4>
+      <p class="font-google text-[13.5px] leading-[1.7] m-0">
+        Facultad de Ciencias y Tecnología<br />
+        Universidad San Francisco Xavier<br />
+        Sucre, Bolivia
+      </p>
+    </div>
+
+    <!-- Contacto -->
+    <div>
+      <h4
+        class="font-google text-xs tracking-[0.24em] uppercase text-[#7FA7DC] mb-3 m-0"
+      >
+        Contacto
+      </h4>
+      <SocialIcons
+        class="[&_a]:text-[#C6DBF7] [&_a:hover]:text-[#10A7BC] [&_svg]:w-5 [&_svg]:h-5"
+      />
+    </div>
+  </div>
+
+  <!-- Striped divider -->
+  <div
+    class="max-w-[1180px] h-2.5 mx-auto mt-8 mb-[18px] rounded-md"
+    style="background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.7) 0 4px, transparent 4px 9px), repeating-linear-gradient(90deg, #1355CC 0 18px, #10A7BC 18px 34px, #F6BE3A 34px 44px, #5C9DF5 44px 62px);"
+    aria-hidden="true"
+  >
+  </div>
+
+  <p class="max-w-[1180px] mx-auto text-center font-google text-xs text-[#6F98CE] m-0">
+    © 2026 Women Techmakers Sucre · Hecho con orgullo boliviano
+  </p>
+</footer>

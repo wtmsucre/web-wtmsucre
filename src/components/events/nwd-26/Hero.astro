@@ -1,0 +1,260 @@
+---
+import cholita from "@/assets/events/nwd-26/cholita.png"
+import late from "@/assets/events/nwd-26/late.png"
+import CTALink from "@/components/CTALink.astro"
+---
+
+<section
+  id="inicio"
+  class="relative z-[1] overflow-hidden px-4 sm:px-6 lg:px-14 pt-8 md:pt-12 lg:pt-16 pb-10 md:pb-16 lg:pb-20"
+>
+  <div
+    class="relative z-2 max-w-[1180px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-8 lg:gap-10"
+  >
+    <!-- Copy -->
+    <div class="max-w-[640px] min-w-0 text-center md:text-left">
+      <p
+        class="font-google font-semibold uppercase tracking-[0.28em] sm:tracking-[0.42em] text-[#1355CC] mb-1.5"
+        style="font-size: clamp(13px, 1.6vw, 17px);"
+      >
+        Mujeres que impulsan
+      </p>
+      <h1
+        class="font-google font-extrabold text-[#1355CC] leading-[0.9] tracking-[-0.02em] m-0"
+        style="font-size: clamp(46px, 8vw, 104px); text-wrap: balance;"
+      >
+        EN ELLAS
+      </h1>
+      <div class="flex justify-center md:justify-start py-2">
+        <img
+          src={late.src}
+          width={late.width}
+          height={late.height}
+          alt="late"
+          class="hero-heartbeat"
+        />
+      </div>
+      <div
+        class="font-google font-bold tracking-[0.26em] sm:tracking-[0.34em] text-[#1355CC]"
+        style="font-size: clamp(20px, 3.2vw, 40px);"
+      >
+        BOLIVIA
+      </div>
+      <div class="w-[120px] h-[7px] rounded bg-[#F6BE3A] mt-[18px] mb-[26px] mx-auto md:mx-0"></div>
+
+      <!-- Date & place -->
+      <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 lg:gap-10 mt-8 mb-[30px] text-left">
+        <div class="flex items-center gap-3">
+          <svg
+            width="42"
+            height="42"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#1355CC"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <rect x="3" y="5" width="18" height="16" rx="4"></rect>
+            <path d="M3 10h18M8 3v4M16 3v4"></path>
+            <rect x="7" y="13.5" width="3.4" height="3.4" rx="1" fill="#F6BE3A" stroke="none"></rect>
+            <rect x="13.6" y="13.5" width="3.4" height="3.4" rx="1" fill="#10A7BC" stroke="none"></rect>
+          </svg>
+          <div class="leading-[1.25]">
+            <div class="font-google text-[11px] tracking-[0.2em] uppercase text-[#6B86B4]">
+              Sábado
+            </div>
+            <div class="font-google font-bold text-[15px] text-[#0B2E6B]">
+              10 de Octubre
+            </div>
+            <div class="font-google text-xs text-[#6B86B4]">14:00 h</div>
+          </div>
+        </div>
+
+        <div class="hidden sm:block w-px h-10 bg-[#D5E1F5]"></div>
+
+        <div class="flex items-center gap-3">
+          <svg
+            width="42"
+            height="42"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#1355CC"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 21.5c4.2-4.6 6.3-7.9 6.3-10.7A6.3 6.3 0 0 0 5.7 10.8c0 2.8 2.1 6.1 6.3 10.7Z"></path>
+            <circle cx="12" cy="10.6" r="2.5" fill="#10A7BC" stroke="none"></circle>
+          </svg>
+          <div class="leading-[1.25]">
+            <div class="font-google text-[11px] tracking-[0.2em] uppercase text-[#6B86B4]">
+              Facultad de
+            </div>
+            <div class="font-google font-bold text-[15px] text-[#0B2E6B]">
+              Ciencias y Tecnología
+            </div>
+            <div class="font-google text-xs text-[#6B86B4]">Sucre, Bolivia</div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="inline-flex items-center justify-center w-full sm:w-auto px-[34px] py-4 sm:py-[18px] rounded-full bg-[#1A73E8] hover:bg-[#0B3FA0] text-white font-google font-semibold tracking-[0.14em] uppercase transition-colors [&_a]:no-underline [&_a]:text-white"
+        style="font-size: clamp(14px, 1.8vw, 17px); box-shadow: 0 14px 30px rgba(26,115,232,0.32);"
+      >
+        <CTALink server:defer eventSlug="nwd-26">
+          <span slot="fallback">Regístrate ahora</span>
+        </CTALink>
+      </div>
+    </div>
+
+    <!-- Illustration -->
+    <div class="relative z-2 min-w-0 flex justify-center">
+      <cholita-animation
+        class="hero-illustration relative w-full max-w-[260px] sm:max-w-[340px] md:max-w-[460px]"
+      >
+        <div class="hero-bubbles" aria-hidden="true">
+          <span class="hero-bubble hero-bubble-sky"></span>
+          <span class="hero-bubble hero-bubble-blue"></span>
+          <span class="hero-bubble hero-bubble-turquoise"></span>
+          <span class="hero-bubble hero-bubble-mist"></span>
+        </div>
+        <canvas class="hero-comet hero-comet-back" data-comet-back aria-hidden="true"></canvas>
+        <img
+          src={cholita.src}
+          width={cholita.width}
+          height={cholita.height}
+          alt="Ilustración de cholita tecnóloga"
+          fetchpriority="high"
+          class="hero-cholita"
+        />
+        <canvas class="hero-comet hero-comet-front" data-comet-front aria-hidden="true"></canvas>
+      </cholita-animation>
+    </div>
+  </div>
+</section>
+
+
+
+
+<style>
+  .hero-heartbeat {
+    display: block;
+    width: clamp(140px, 20vw, 280px);
+    max-width: 88%;
+    height: auto;
+    transform-origin: center;
+    animation: hero-heartbeat 3s ease-in-out infinite;
+  }
+
+  @keyframes hero-heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-heartbeat { animation: none; }
+  }
+
+  .hero-illustration {
+    display: block;
+    isolation: isolate;
+    aspect-ratio: 5 / 6;
+  }
+
+  .hero-bubbles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .hero-bubbles {
+    z-index: -1;
+  }
+
+  .hero-bubble {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+  }
+
+  .hero-bubble-sky {
+    width: 96%;
+    aspect-ratio: 1;
+    top: 12%;
+    left: 0;
+    background: #c3eaf7;
+  }
+
+  .hero-bubble-blue {
+    width: 65%;
+    aspect-ratio: 1;
+    top: 17%;
+    right: 1%;
+    background: #a9d4f8;
+    opacity: 0.65;
+  }
+
+  .hero-bubble-turquoise {
+    width: 64%;
+    height: 34%;
+    right: -3%;
+    bottom: 4%;
+    background: #8de0e5;
+    transform: rotate(-24deg);
+  }
+
+  .hero-bubble-mist {
+    width: 43%;
+    aspect-ratio: 1;
+    left: -2%;
+    bottom: 5%;
+    background: #d9f3fa;
+    opacity: 0.8;
+  }
+
+  .hero-comet {
+    position: absolute;
+    inset: -20%;
+    width: 140%;
+    height: 140%;
+    pointer-events: none;
+  }
+
+  .hero-comet-back { z-index: 0; }
+  .hero-comet-front { z-index: 2; }
+
+  .hero-cholita {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>
+
+
+<script>
+  import { animateCholita } from "@/scripts/cholita-animation.js"
+
+  class CholitaAnimation extends HTMLElement {
+    private cleanup?: () => void
+
+    connectedCallback() {
+      this.cleanup?.()
+      this.cleanup = animateCholita(this)
+    }
+
+    disconnectedCallback() {
+      this.cleanup?.()
+    }
+  }
+
+  if (!customElements.get("cholita-animation")) {
+    customElements.define("cholita-animation", CholitaAnimation)
+  }
+</script>
