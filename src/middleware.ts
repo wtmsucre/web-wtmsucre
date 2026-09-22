@@ -40,8 +40,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Registration pages need authentication
   if (path.startsWith("/registro")) {
-    const sessionToken = cookies.get("sb-access-token")?.value
-    if (!sessionToken) {
+    const supabase = createSupabaseServerClient({ request, cookies })
+    const { data, error } = await supabase.auth.getUser()
+    if (error || !data.user) {
       return context.redirect(
         `/api/auth/signin?next=${encodeURIComponent(url.pathname + url.search)}`
       )

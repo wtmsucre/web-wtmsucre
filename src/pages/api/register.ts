@@ -28,6 +28,12 @@ const sendEmail = async (supabase: SupabaseClient, event_name: string, event_slu
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   const supabase = createSupabaseServerClient({ request, cookies })
+  const { data, error } = await supabase.auth.getUser()
+  if (error || !data.user) {
+    return new Response("Tu sesión no es válida. Vuelve a iniciar sesión para registrarte.", {
+      status: 401,
+    })
+  }
   const formData = await request.formData()
 
   const { event_id, event_slug, event_name, first_name, last_name, phone_number, ...fields } =
