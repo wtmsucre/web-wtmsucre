@@ -1,5 +1,5 @@
 import { defineMiddleware } from "astro:middleware"
-
+import { getUser } from "@/lib/services/profileService"
 import { createSupabaseServerClient } from "@/lib/supabase"
 import { deleteSupabaseCookies, setSupabaseCookies } from "@/lib/utils"
 
@@ -38,10 +38,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
   }
 
+  // Refresh or clear auth cookies before Astro starts streaming any page.
+  const supabase = createSupabaseServerClient({ request, cookies })
+  const user = await getUser(supabase)
+
   // Registration pages need authentication
   if (path.startsWith("/registro")) {
-    const sessionToken = cookies.get("sb-access-token")?.value
-    if (!sessionToken) {
+    if (!user) {
       return context.redirect(
         `/api/auth/signin?next=${encodeURIComponent(url.pathname + url.search)}`
       )

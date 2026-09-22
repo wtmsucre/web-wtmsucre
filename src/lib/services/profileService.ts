@@ -1,10 +1,15 @@
-import type { SupabaseClient } from "@supabase/supabase-js"
+import type { SupabaseClient, User } from "@supabase/supabase-js"
+
+// Server clients are scoped to one request. Resolve auth in middleware before
+// streaming, then reuse the result in components without changing cookies.
+const requestUsers = new WeakMap<SupabaseClient, Promise<User | null>>()
 
 export async function getUser(supabase: SupabaseClient) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+  let user = requestUsers.get(supabase)
+  if (!user) {
+    user = supabase.auth.getUser().then(({ data, error }) => (error ? null : data.user))
+    requestUsers.set(supabase, user)
+  }
   return user
 }
 

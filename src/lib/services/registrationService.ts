@@ -55,12 +55,15 @@ export async function getEventRegistration(
     return null
   }
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("registrations")
     .select("id, status, events!inner(slug), qr_url")
     .eq("user_id", user_id)
     .eq("events.slug", eventSlug)
     .maybeSingle()
+
+  if (error) throw new Error(`Error al obtener la inscripción: ${error.message}`)
+  if (!data) return null
 
   const { data: organizer } = await supabase
     .from("organizers")

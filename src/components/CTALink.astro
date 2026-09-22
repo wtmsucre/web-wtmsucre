@@ -1,27 +1,34 @@
 ---
-import { hasRegistration } from "@/lib/services/registrationService"
-import { createUserClient } from "@/lib/supabase"
+import { getUser } from "@/lib/services/profileService"
+import { getEventRegistration } from "@/lib/services/registrationService"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
-const { eventSlug } = Astro.props
+const {
+  eventSlug,
+  class: className = "block w-full h-full",
+  registerLabel = "Regístrate ahora",
+} = Astro.props
 
-const accessToken = Astro.cookies.get("sb-access-token")?.value
-let redirectHref = accessToken
-  ? `/registro/${eventSlug}`
-  : `/api/auth/signin?next=/registro/${eventSlug}`
+let redirectHref = `/api/auth/signin?next=/registro/${eventSlug}`
+let label = registerLabel
 
-let registration = false
-if (accessToken) {
-  const supabase = await createUserClient(Astro.cookies)
-  const {
-    data: { claims },
-  } = await supabase.auth.getClaims(accessToken)
-  registration = await hasRegistration(supabase, claims?.sub, eventSlug)
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
+const user = await getUser(supabase)
+if (user) {
+  redirectHref = `/registro/${eventSlug}`
+  const registration = await getEventRegistration(supabase, user.id, eventSlug)
   if (registration) {
-    redirectHref = `/registro/${eventSlug}/confirmado`
+    label = "Ver mi registro"
+    if (registration.status === "pending") {
+      redirectHref += "/pendiente"
+    } else if (registration.status === "confirmed") {
+      redirectHref += "/confirmado"
+      label = "Ver credencial"
+    }
   }
 }
 ---
 
-<a href={redirectHref} class="block w-full h-full">
-  {registration ? "Ver Credencial" : "Regístrate ahora"}
+<a href={redirectHref} class={className}>
+  {label}
 </a>

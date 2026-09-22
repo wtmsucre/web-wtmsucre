@@ -3,16 +3,12 @@ import AvatarMenu from "@/components/AvatarMenu"
 
 import { getProfile, getStaffRoles } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
-import { createSupabaseServerClient, createUserClient } from "@/lib/supabase"
+import { createSupabaseServerClient } from "@/lib/supabase"
 
 let userInitials = ""
 
 const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
 const profile = await getProfile(supabase)
-
-if (!profile) {
-  return null
-}
 
 const names = profile?.first_name ? profile.first_name.trim().split(" ") : []
 if (names.length > 1 && names[0] && names[1]) {
@@ -34,13 +30,17 @@ if (profile?.id && !profile?.is_admin) {
 }
 ---
 
-<AvatarMenu
-  avatarUrl={profile?.avatar_url}
-  userName={profile?.first_name || profile?.email || "Usuario"}
-  userInitials={userInitials}
-  email={profile?.email || ""}
-  admin={profile?.is_admin || Object.keys(staffRoles).length > 0}
-  registered={!!registration}
-  eventSlug={eventSlug}
-  client:load
-/>
+{
+  profile ? (
+    <AvatarMenu
+      avatarUrl={profile.avatar_url}
+      userName={profile.first_name || profile.email || "Usuario"}
+      userInitials={userInitials}
+      email={profile.email || ""}
+      admin={profile.is_admin || Object.keys(staffRoles).length > 0}
+      registered={!!registration}
+      eventSlug={eventSlug}
+      client:load
+    />
+  ) : <slot />
+}

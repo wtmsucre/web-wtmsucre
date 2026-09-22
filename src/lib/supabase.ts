@@ -10,29 +10,61 @@ export const supabase = createClient(
   }
 )
 
+const cookieNames = new WeakMap<AstroCookies, Set<string>>()
+const serverClients = new WeakMap<AstroCookies, SupabaseClient>()
+
 export function createSupabaseServerClient(context: { request: Request; cookies: AstroCookies }) {
-  return createServerClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY, {
-    cookies: {
-      getAll() {
-        const header = context.request.headers.get("cookie") ?? ""
-        return header
-          .split(";")
-          .filter(Boolean)
-          .map(cookie => {
-            const [name, ...value] = cookie.trim().split("=")
-            return { name, value: value.join("=") }
-          })
+  const existingClient = serverClients.get(context.cookies)
+  if (existingClient) return existingClient
+
+  let names = cookieNames.get(context.cookies)
+  if (!names) {
+    names = new Set(
+      (context.request.headers.get("cookie") ?? "")
+        .split(";")
+        .map(cookie => cookie.trim().split("=")[0])
+        .filter(Boolean)
+    )
+    cookieNames.set(context.cookies, names)
+  }
+  const sessionCookie = `sb-${new URL(import.meta.env.SUPABASE_URL).hostname.split(".")[0]}-auth-token`
+  const hasSsrSession = [...names].some(
+    name =>
+      (name === sessionCookie ||
+        (/^\d+$/.test(name.slice(sessionCookie.length + 1)) &&
+          name.startsWith(`${sessionCookie}.`))) &&
+      !!context.cookies.get(name)?.value
+  )
+  // Support sessions created before the migration to Supabase SSR cookies.
+  const accessToken = !hasSsrSession ? context.cookies.get("sb-access-token")?.value : undefined
+  const client = createServerClient(
+    import.meta.env.SUPABASE_URL,
+    import.meta.env.SUPABASE_ANON_KEY,
+    {
+      global: {
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
       },
-      setAll(cookiesToSet) {
-        for (const { name, value, options } of cookiesToSet) {
-          context.cookies.set(name, value, {
-            ...options,
-            path: options?.path ?? "/",
+      cookies: {
+        getAll() {
+          return [...names].flatMap(name => {
+            const cookie = context.cookies.get(name)
+            return cookie?.value ? [{ name, value: cookie.value }] : []
           })
-        }
+        },
+        setAll(cookiesToSet) {
+          for (const { name, value, options } of cookiesToSet) {
+            names.add(name)
+            context.cookies.set(name, value, {
+              ...options,
+              path: options?.path ?? "/",
+            })
+          }
+        },
       },
-    },
-  })
+    }
+  )
+  serverClients.set(context.cookies, client)
+  return client
 }
 
 export const createUserClient = async (cookies: APIContext["cookies"]): Promise<SupabaseClient> => {
