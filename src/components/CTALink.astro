@@ -1,4 +1,5 @@
 ---
+import { getUser } from "@/lib/services/profileService"
 import { getEventRegistration } from "@/lib/services/registrationService"
 import { createSupabaseServerClient } from "@/lib/supabase"
 
@@ -12,10 +13,10 @@ let redirectHref = `/api/auth/signin?next=/registro/${eventSlug}`
 let label = registerLabel
 
 const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
-const { data, error } = await supabase.auth.getUser()
-if (!error && data.user) {
+const user = await getUser(supabase)
+if (user) {
   redirectHref = `/registro/${eventSlug}`
-  const registration = await getEventRegistration(supabase, data.user.id, eventSlug)
+  const registration = await getEventRegistration(supabase, user.id, eventSlug)
   if (registration) {
     label = "Ver mi registro"
     if (registration.status === "pending") {

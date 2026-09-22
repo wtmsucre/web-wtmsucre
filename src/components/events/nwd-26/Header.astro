@@ -12,6 +12,7 @@ interface Props {
 }
 
 const { sections = [{ href: "#inicio", label: "Inicio" }] } = Astro.props
+const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathname)}`
 ---
 
 <header
@@ -49,9 +50,9 @@ const { sections = [{ href: "#inicio", label: "Inicio" }] } = Astro.props
     <div class="ml-auto md:ml-0 shrink-0">
       <Avatar eventSlug="nwd-26">
         <a
-          href="/registro/nwd-26"
+          href={signInHref}
           class="font-google font-semibold text-[13px] lg:text-sm text-white bg-[#1355CC] hover:bg-[#0B3FA0] px-4 sm:px-5 py-2.5 rounded-full transition-colors no-underline"
-        >Registrarme</a>
+        >Iniciar sesión</a>
       </Avatar>
     </div>
 

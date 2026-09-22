@@ -1,6 +1,7 @@
 ---
 import { ConfettiEffect } from "@/components/ConfettiEffect"
-import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
+// import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
+import NwdHeader from "@/components/events/nwd-26/Header.astro"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getProfile } from "@/lib/services/profileService"
@@ -18,7 +19,7 @@ if (registration?.status !== "pending") return Astro.redirect("/")
 ---
 
 <BaseLayout theme="dark">
-  <IoExtendedHeader />
+  <NwdHeader />
   <ConfettiEffect client:load />
   <main class="bg-io-bg flex min-h-screen pt-16 md:pt-24 text-io-text">
     <div class="mx-auto px-4">
@@ -29,7 +30,7 @@ if (registration?.status !== "pending") return Astro.redirect("/")
         <br />
         Mientras esperas, te invitamos a nuestra
         <a
-          href="https://chat.whatsapp.com/EHtkjWuuhPh8cPDY8U9A7O"
+          href="https://chat.whatsapp.com/J7jqHD4MUZy8LmJNBX68HC"
           class="text-green-500 font-medium underline">Comunidad en WhatsApp</a
         >
       </p>
