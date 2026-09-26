@@ -13,6 +13,7 @@ interface Props {
 
 const { sections = [{ href: "#inicio", label: "Inicio" }] } = Astro.props
 const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathname)}`
+const showSignInButton = false
 ---
 
 <header
@@ -23,7 +24,7 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
     class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-14 py-3.5 flex items-center justify-between gap-3 sm:gap-5"
   >
     <!-- Logo -->
-    <a href="#inicio" class="flex items-center gap-3 no-underline text-[#0B2E6B]">
+    <a href="#inicio" class="flex items-center gap-3 no-underline text-nwd-ink">
       <img src={wtmLogo.src} alt="WTM Sucre" class="h-9 lg:h-10 w-auto block" />
       <div class="leading-[1.1] hidden min-[400px]:block">
         <div class="font-google font-semibold text-[13px] sm:text-sm whitespace-nowrap">Women Techmakers</div>
@@ -39,7 +40,7 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
         sections.map((section) => (
           <a
             href={section.href}
-            class="text-[13px] lg:text-sm text-[#345189] font-google font-medium hover:text-[#10A7BC] transition-colors no-underline"
+            class="text-[13px] lg:text-sm text-[#345189] font-google font-medium hover:text-nwd-teal transition-colors no-underline"
           >
             {section.label}
           </a>
@@ -47,19 +48,25 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
       }
     </nav>
 
-    <div class="ml-auto md:ml-0 shrink-0">
-      <Avatar eventSlug="nwd-26">
-        <a
-          href={signInHref}
-          class="font-google font-semibold text-[13px] lg:text-sm text-white bg-[#1355CC] hover:bg-[#0B3FA0] px-4 sm:px-5 py-2.5 rounded-full transition-colors no-underline"
-        >Iniciar sesión</a>
-      </Avatar>
+    <div class="ml-auto md:ml-0 shrink-0 flex items-center gap-3">
+      <a
+        href="/eventos"
+        class="font-google font-semibold text-[13px] lg:text-sm text-nwd-blue border border-nwd-blue hover:bg-nwd-blue hover:text-white px-4 sm:px-5 py-2.5 rounded-full transition-colors no-underline"
+      >Eventos pasados</a>
+      {showSignInButton && (
+        <Avatar eventSlug="nwd-26">
+          <a
+            href={signInHref}
+            class="font-google font-semibold text-[13px] lg:text-sm text-white bg-nwd-blue hover:bg-nwd-blue-dark px-4 sm:px-5 py-2.5 rounded-full transition-colors no-underline"
+          >Iniciar sesión</a>
+        </Avatar>
+      )}
     </div>
 
     <!-- Mobile Hamburger Button -->
     <button
       id="menu-toggle"
-      class="md:hidden flex flex-col justify-between w-6 h-3.5 text-[#0B2E6B] focus:outline-none z-50 cursor-pointer"
+      class="md:hidden flex flex-col justify-between w-6 h-3.5 text-nwd-ink focus:outline-none z-50 cursor-pointer"
       aria-label="Abrir menú"
     >
       <span
@@ -76,18 +83,22 @@ const signInHref = `/api/auth/signin?next=${encodeURIComponent(Astro.url.pathnam
   <!-- Mobile Menu Dropdown -->
   <div
     id="mobile-menu"
-    class="absolute top-full left-0 w-full bg-[#F6F8FC] border-b border-[#E1E9F6] transition-all duration-300 ease-in-out opacity-0 translate-y-2.5 pointer-events-none md:hidden flex flex-col py-6 px-6 gap-4 shadow-xl"
+    class="absolute top-full left-0 w-full bg-nwd-paper border-b border-[#E1E9F6] transition-all duration-300 ease-in-out opacity-0 translate-y-2.5 pointer-events-none md:hidden flex flex-col py-6 px-6 gap-4 shadow-xl"
   >
     {
       sections.map((section) => (
         <a
           href={section.href}
-          class="text-base text-[#345189] font-google font-medium hover:text-[#10A7BC] transition-colors no-underline py-2 border-b border-[#E1E9F6] last:border-none"
+          class="text-base text-[#345189] font-google font-medium hover:text-nwd-teal transition-colors no-underline py-2 border-b border-[#E1E9F6] last:border-none"
         >
           {section.label}
         </a>
       ))
     }
+    <a
+      href="/eventos"
+      class="text-base text-nwd-blue font-google font-semibold hover:text-nwd-teal transition-colors no-underline py-2"
+    >Eventos pasados</a>
   </div>
 </header>
 
