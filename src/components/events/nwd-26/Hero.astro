@@ -2,6 +2,8 @@
 import cholita from "@/assets/events/nwd-26/cholita.png"
 import late from "@/assets/events/nwd-26/late.png"
 import CTALink from "@/components/CTALink.astro"
+
+const showRegistrationCta = false
 ---
 
 <section
@@ -14,13 +16,13 @@ import CTALink from "@/components/CTALink.astro"
     <!-- Copy -->
     <div class="max-w-[640px] min-w-0 text-center md:text-left">
       <p
-        class="font-google font-semibold uppercase tracking-[0.28em] sm:tracking-[0.42em] text-[#1355CC] mb-1.5"
+        class="font-google font-semibold uppercase tracking-[0.28em] sm:tracking-[0.42em] text-nwd-blue mb-1.5"
         style="font-size: clamp(13px, 1.6vw, 17px);"
       >
         Mujeres que impulsan
       </p>
       <h1
-        class="font-google font-extrabold text-[#1355CC] leading-[0.9] tracking-[-0.02em] m-0"
+        class="font-google font-extrabold text-nwd-blue leading-[0.9] tracking-[-0.02em] m-0"
         style="font-size: clamp(46px, 8vw, 104px); text-wrap: balance;"
       >
         EN ELLAS
@@ -35,12 +37,12 @@ import CTALink from "@/components/CTALink.astro"
         />
       </div>
       <div
-        class="font-google font-bold tracking-[0.26em] sm:tracking-[0.34em] text-[#1355CC]"
+        class="font-google font-bold tracking-[0.26em] sm:tracking-[0.34em] text-nwd-blue"
         style="font-size: clamp(20px, 3.2vw, 40px);"
       >
         BOLIVIA
       </div>
-      <div class="w-[120px] h-[7px] rounded bg-[#F6BE3A] mt-[18px] mb-[26px] mx-auto md:mx-0"></div>
+      <div class="w-[120px] h-[7px] rounded bg-nwd-yellow mt-[18px] mb-[26px] mx-auto md:mx-0"></div>
 
       <!-- Date & place -->
       <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 lg:gap-10 mt-8 mb-[30px] text-left">
@@ -64,7 +66,7 @@ import CTALink from "@/components/CTALink.astro"
             <div class="font-google text-[11px] tracking-[0.2em] uppercase text-[#6B86B4]">
               Sábado
             </div>
-            <div class="font-google font-bold text-[15px] text-[#0B2E6B]">
+            <div class="font-google font-bold text-[15px] text-nwd-ink">
               10 de Octubre
             </div>
             <div class="font-google text-xs text-[#6B86B4]">14:00 h</div>
@@ -92,7 +94,7 @@ import CTALink from "@/components/CTALink.astro"
             <div class="font-google text-[11px] tracking-[0.2em] uppercase text-[#6B86B4]">
               Facultad de
             </div>
-            <div class="font-google font-bold text-[15px] text-[#0B2E6B]">
+            <div class="font-google font-bold text-[15px] text-nwd-ink">
               Ciencias y Tecnología
             </div>
             <div class="font-google text-xs text-[#6B86B4]">Sucre, Bolivia</div>
@@ -100,14 +102,16 @@ import CTALink from "@/components/CTALink.astro"
         </div>
       </div>
 
-      <div
-        class="inline-flex items-center justify-center w-full sm:w-auto px-[34px] py-4 sm:py-[18px] rounded-full bg-[#1A73E8] hover:bg-[#0B3FA0] text-white font-google font-semibold tracking-[0.14em] uppercase transition-colors [&_a]:no-underline [&_a]:text-white"
-        style="font-size: clamp(14px, 1.8vw, 17px); box-shadow: 0 14px 30px rgba(26,115,232,0.32);"
-      >
-        <CTALink server:defer eventSlug="nwd-26">
-          <span slot="fallback">Regístrate ahora</span>
-        </CTALink>
-      </div>
+      {showRegistrationCta && (
+        <div
+          class="inline-flex items-center justify-center w-full sm:w-auto px-[34px] py-4 sm:py-[18px] rounded-full bg-[#1A73E8] hover:bg-nwd-blue-dark text-white font-google font-semibold tracking-[0.14em] uppercase transition-colors [&_a]:no-underline [&_a]:text-white"
+          style="font-size: clamp(14px, 1.8vw, 17px); box-shadow: 0 14px 30px rgba(26,115,232,0.32);"
+        >
+          <CTALink server:defer eventSlug="nwd-26">
+            <span slot="fallback">Regístrate ahora</span>
+          </CTALink>
+        </div>
+      )}
     </div>
 
     <!-- Illustration -->

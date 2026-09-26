@@ -11,6 +11,15 @@
 }
 
 @theme {
+  /* Paleta compartida de la landing y la credencial NWD. */
+  --color-nwd-blue: #1355cc;
+  --color-nwd-blue-dark: #0b3fa0;
+  --color-nwd-ink: #0b2e6b;
+  --color-nwd-teal: #10a7bc;
+  --color-nwd-yellow: #f6be3a;
+  --color-nwd-sky: #a9d4f8;
+  --color-nwd-paper: #f6f8fc;
+
   --color-blue-500: #4285f4;
   --color-blue-600: #1a73e8;
   --color-green-500: #34a853;

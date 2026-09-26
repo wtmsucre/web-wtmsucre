@@ -1,0 +1,24 @@
+---
+import CredentialCard from "@/components/events/nwd-26/CredentialCard"
+import BaseLayout from "@/layout/BaseLayout.astro"
+
+if (!import.meta.env.DEV) return new Response(null, { status: 404 })
+---
+
+<BaseLayout title="Vista previa de credencial NWD" theme="light">
+  <main class="min-h-screen bg-nwd-paper px-4 py-8">
+    <p class="mx-auto mb-6 max-w-sm text-center text-sm text-nwd-ink">
+      Vista previa de diseño. Los datos y el QR son de muestra y no acreditan una inscripción.
+    </p>
+    <div class="flex justify-center">
+      <CredentialCard
+        client:load
+        firstName="Marcela"
+        lastName={Astro.url.searchParams.get("apellido") || "Miranda Veniz"}
+        role="Participante"
+        avatarUrl={Astro.url.searchParams.has("sin-foto") ? undefined : "/avatar-default.webp"}
+        qrUrl="/events/devfest-25/qr.png"
+      />
+    </div>
+  </main>
+</BaseLayout>
