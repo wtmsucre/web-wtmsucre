@@ -3,6 +3,7 @@ import CredentialCardBWAI26 from "@/components/events/bwai-26/CredentialCard"
 import CredentialCardDevfest25 from "@/components/events/devfest-25/CredentialCard"
 import CredentialCardIO26 from "@/components/events/io-extended-26/CredentialCard"
 import CredentialCardIWD26 from "@/components/events/iwd-26/CredentialCard"
+import CredentialCardNWD26 from "@/components/events/nwd-26/CredentialCard"
 // import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import NwdHeader from "@/components/events/nwd-26/Header.astro"
 
@@ -36,14 +37,15 @@ const cardProps = {
 }
 ---
 
-<BaseLayout theme="dark">
+<BaseLayout theme={eventSlug === "nwd-26" ? "light" : "dark"}>
   <NwdHeader />
-  <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-white">
-    <div class="mx-auto px-4">
+  <main class={eventSlug === "nwd-26" ? "bg-nwd-paper flex flex-1 py-8 sm:py-12" : "bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-white"}>
+    <div class={eventSlug === "nwd-26" ? "mx-auto flex w-full justify-center self-start px-4" : "mx-auto px-4"}>
+      {eventSlug === "nwd-26" && <CredentialCardNWD26 client:load {...cardProps} />}
       {eventSlug === "io-extended-26" && <CredentialCardIO26 client:load {...cardProps} />}
       {eventSlug === "iwd-26" && <CredentialCardIWD26 client:load {...cardProps} />}
       {eventSlug === "devfest-25" && <CredentialCardDevfest25 client:load {...cardProps} />}
-      {(eventSlug === "bwai-26" || !["io-extended-26", "iwd-26", "devfest-25"].includes(eventSlug)) && (
+      {(eventSlug === "bwai-26" || !["io-extended-26", "iwd-26", "devfest-25", "nwd-26"].includes(eventSlug)) && (
         <CredentialCardBWAI26 client:load {...cardProps} />
       )}
     </div>
