@@ -1,0 +1,49 @@
+---
+import SpeakerCard, { type Speaker } from "@/components/events/nwd-26/speakers/SpeakerCard.astro"
+
+import speakers from "@/data/nwd-26/speakers.json"
+
+const speakersData = speakers as Speaker[]
+---
+
+<section
+  id="speakers"
+  class="relative z-[1] overflow-hidden bg-[#FAFCFF] px-4 pb-20 pt-16 sm:px-6 md:pb-24 md:pt-20 lg:px-14 lg:pb-28 lg:pt-24"
+  aria-labelledby="speakers-title"
+>
+  <div class="relative z-[1] mx-auto max-w-[1040px]">
+    <!-- Encabezado -->
+    <header class="mb-8 max-w-[720px] md:mb-10">
+      <p
+        class="mb-2.5 text-[10px] font-bold uppercase leading-[1.2] tracking-[0.28em] text-[#10A7BC] md:text-xs md:tracking-[0.34em]"
+      >
+        Mujeres que inspiran
+      </p>
+
+      <h2
+        id="speakers-title"
+        class="m-0 text-[clamp(32px,4vw,48px)] font-bold leading-[0.98] tracking-[-0.045em] text-[#1355CC]"
+      >
+        Nuestras speakers
+      </h2>
+
+      <p
+        class="mt-3.5 max-w-[700px] text-[clamp(14px,1.35vw,17px)] leading-[1.5] text-[#4B6593] md:mt-[18px] md:leading-[1.55]"
+      >
+        Conoce a las mujeres que compartirán sus conocimientos, experiencias
+        e ideas para inspirar a nuestra comunidad tecnológica.
+      </p>
+    </header>
+
+    <!-- Speakers -->
+    <div
+      class="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {
+        speakersData.map((speaker) => (
+          <SpeakerCard speaker={speaker} />
+        ))
+      }
+    </div>
+  </div>
+</section>

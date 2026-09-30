@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1",
+    "name": "María Pérez",
+    "photo": "/events/nwd-26/cholita-tech.webp",
+    "talkTitle": "Tecnología que transforma",
+    "description": "Una conversación sobre tecnología, innovación y las oportunidades para crear soluciones que generen impacto.",
+    "topic": "Tecnología"
+  },
+  {
+    "id": "2",
+    "name": "Ana Rodríguez",
+    "photo": "/events/nwd-26/cholita-tech.webp",
+    "talkTitle": "Mujeres construyendo el futuro",
+    "description": "Experiencias y aprendizajes para impulsar la participación de más mujeres en el mundo tecnológico.",
+    "topic": "Innovación"
+  },
+  {
+    "id": "3",
+    "name": "Carla Mendoza",
+    "photo": "/events/nwd-26/cholita-tech.webp",
+    "talkTitle": "Creando soluciones con tecnología",
+    "description": "Ideas y herramientas para convertir problemas cotidianos en oportunidades mediante la tecnología.",
+    "topic": "Desarrollo"
+  },
+  {
+    "id": "4",
+    "name": "Laura Vargas",
+    "photo": "/events/nwd-26/cholita-tech.webp",
+    "talkTitle": "De la idea al impacto",
+    "description": "Un recorrido por el proceso de transformar una idea en un proyecto tecnológico con propósito.",
+    "topic": "Emprendimiento"
+  }
+]

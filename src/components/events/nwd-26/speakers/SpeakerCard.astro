@@ -1,0 +1,69 @@
+---
+export interface Speaker {
+  id: string
+  name: string
+  photo: string
+  talkTitle: string
+  description: string
+  topic: string
+}
+
+interface Props {
+  speaker: Speaker
+}
+
+const { speaker } = Astro.props
+---
+
+<article
+  class="flex h-full min-w-0 flex-col overflow-hidden rounded-[18px] border border-[#1355CC]/[0.08] bg-white shadow-[0_12px_30px_rgba(11,46,107,0.075)] transition-[transform,box-shadow,border-color] duration-[220ms] ease-out hover:-translate-y-1 hover:border-[#1355CC]/[0.18] hover:shadow-[0_16px_36px_rgba(11,46,107,0.1)]"
+>
+  <!-- Foto -->
+  <div class="relative aspect-square overflow-hidden bg-[#EAF4FF]">
+    <img
+      src={speaker.photo}
+      alt={`Foto de ${speaker.name}`}
+      loading="lazy"
+      decoding="async"
+      class="block size-full object-cover object-center transition-transform duration-300 ease-out hover:scale-[1.035]"
+    />
+
+    <!-- Tema -->
+    <span
+      class="absolute right-3.5 bottom-3.5 inline-flex min-h-7 items-center justify-center rounded-full bg-[#F6BE3A] px-[13px] py-[5px] text-[11px] font-bold leading-none text-[#0B3FA0] shadow-[0_7px_16px_rgba(11,63,160,0.16)]"
+    >
+      {speaker.topic}
+    </span>
+  </div>
+
+  <!-- Información -->
+  <div class="flex min-w-0 flex-1 flex-col p-[18px_20px_20px] max-md:p-[15px_16px_17px]">
+    <!-- Nombre -->
+    <h3
+      class="m-0 text-[clamp(20px,1.8vw,24px)] font-bold leading-[1.15] tracking-[-0.02em] text-[#0B2E6B]"
+    >
+      {speaker.name}
+    </h3>
+
+    <!-- Rol -->
+    <p
+      class="mb-3.5 mt-1.5 text-[10px] font-bold leading-[1.2] tracking-[0.28em] text-[#10A7BC] max-md:mb-3"
+    >
+      SPEAKER
+    </p>
+
+    <!-- Charla -->
+    <h4
+      class="m-0 mb-2.5 text-base font-bold leading-[1.3] text-[#1355CC]"
+    >
+      {speaker.talkTitle}
+    </h4>
+
+    <!-- Descripción -->
+    <p
+      class="m-0 text-[13px] leading-[1.5] text-[#4B6593]"
+    >
+      {speaker.description}
+    </p>
+  </div>
+</article>
