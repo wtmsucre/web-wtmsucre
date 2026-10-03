@@ -20,7 +20,7 @@ const DEFAULT_EVENT_DATA: EventData = {
 const EVENT_DATA: Record<string, Partial<EventData>> = {
   // Women Techmakers Sucre
   "nwd-26": {
-    whatsappLink: "https://chat.whatsapp.com/J7jqHD4MUZy8LmJNBX68HC",
+    whatsappLink: "https://chat.whatsapp.com/K2IP9EQagWyIi30icqRJ3b",
   },
 }
 

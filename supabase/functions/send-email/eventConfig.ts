@@ -55,7 +55,7 @@ export const EVENT_CONFIG: Record<string, Partial<EventConfig>> = {
     organizerName: "Women Techmakers Sucre",
     organizerShortName: "WTM Sucre",
     organizerTagline: "Women Techmakers",
-    whatsappLink: "https://chat.whatsapp.com/J7jqHD4MUZy8LmJNBX68HC",
+    whatsappLink: "https://chat.whatsapp.com/K2IP9EQagWyIi30icqRJ3b",
     websiteUrl: "https://wtmsucre.com",
     brandColors: ["#1355CC", "#10A7BC", "#F6BE3A", "#0B3FA0"],
     eventDate: "Sábado 10 de octubre",
