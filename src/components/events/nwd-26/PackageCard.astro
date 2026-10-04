@@ -75,11 +75,17 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     {availability && (
       <div class="package-availability" aria-label={`${availability.sold} de ${availability.total} paquetes vendidos`}>
         <div class="availability-label">
-          <span>{availability.percentage}% de paquetes vendidos</span>
+          <span class:list={{ "availability-status--available": availability.percentage < 50 }}>
+            {availability.percentage < 50
+              ? "Disponible"
+              : `${availability.percentage}% de paquetes vendidos`}
+          </span>
         </div>
-        <div class="availability-track" role="progressbar" aria-valuemin="0" aria-valuemax={availability.total} aria-valuenow={availability.sold}>
-          <span style={{ width: `${availability.percentage}%` }}></span>
-        </div>
+        {availability.percentage >= 50 && (
+          <div class="availability-track" role="progressbar" aria-valuemin="0" aria-valuemax={availability.total} aria-valuenow={availability.sold}>
+            <span style={{ width: `${availability.percentage}%` }}></span>
+          </div>
+        )}
       </div>
     )}
   </div>
@@ -251,6 +257,19 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
     overflow: hidden;
     border-radius: 999px;
     background: color-mix(in srgb, var(--pkg-accent) 16%, white);
+  }
+
+  .availability-status--available {
+    display: inline-block;
+    padding: 1.8cqw 3.2cqw;
+    border: 1px solid color-mix(in srgb, var(--pkg-accent) 42%, white);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pkg-accent) 14%, white);
+    color: var(--pkg-accent);
+    font-size: 5.5cqw;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    box-shadow: 0 3px 10px color-mix(in srgb, var(--pkg-accent) 12%, transparent);
   }
 
   .availability-track span {
