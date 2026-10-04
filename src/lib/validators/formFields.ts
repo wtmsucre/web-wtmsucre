@@ -13,6 +13,7 @@ export const formFieldSchema = z.object({
   type: z.enum(SUPPORTED_TYPES),
   required: z.boolean(),
   options: z.array(z.string()).nullish(),
+  disabledOptions: z.array(z.string()).nullish(),
   image_url: z.string().nullish(),
 })
 
@@ -31,7 +32,10 @@ export function buildZodSchemaFromFields(fields: FormFieldSchema[]) {
 
       case "select":
         if (Array.isArray(field.options) && field.options.length > 0) {
-          base = z.enum(field.options, {
+          const availableOptions = field.options.filter(
+            option => !field.disabledOptions?.includes(option)
+          )
+          base = z.enum(availableOptions.length > 0 ? availableOptions : field.options, {
             error: "Elige una opción de la lista.",
           })
         } else {

@@ -93,6 +93,14 @@ export async function submitRegistration(
     }
   }
 
+  if (typeof fields.package === "string") {
+    const packageSales = await getPackageSales(supabase, String(event_slug))
+    const selected = packageSales.find(({ packageName }) => packageName === fields.package)
+    if (selected && selected.soldCount >= 12) {
+      throw new Error("Este paquete ya no tiene unidades disponibles")
+    }
+  }
+
   const { error: insertError } = await supabase.from("registrations").insert([
     {
       user_id: user.id,
@@ -149,6 +157,28 @@ export async function getRegistrationsByEvent(
   )
 
   return flattenedRegistrations
+}
+
+export interface PackageSales {
+  packageName: string
+  soldCount: number
+}
+
+/** Returns aggregate sales only; individual registration data stays private. */
+export async function getPackageSales(supabase: SupabaseClient, eventSlug: string) {
+  const { data, error } = await supabase.rpc("get_package_sales", {
+    p_event_slug: eventSlug,
+  })
+
+  if (error) {
+    console.error(`Error obteniendo ventas de paquetes: ${error.message}`)
+    return [] as PackageSales[]
+  }
+
+  return (data ?? []).map(row => ({
+    packageName: String((row as { package_name?: unknown }).package_name ?? ""),
+    soldCount: Number((row as { sold_count?: unknown }).sold_count ?? 0),
+  }))
 }
 
 export async function confirmRegistration(supabase: SupabaseClient, registrationId: number) {

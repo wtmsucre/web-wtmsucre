@@ -121,7 +121,12 @@ export function RegisterForm({ formFields, profile, event }: RegisterFormProps) 
                 )}
                 <FormControl>
                   {formField.type === "select" && formField.options ? (
-                    <FormSelect label={formField.label} options={formField.options} field={field} />
+                    <FormSelect
+                      label={formField.label}
+                      options={formField.options}
+                      disabledOptions={formField.disabledOptions}
+                      field={field}
+                    />
                   ) : formField.type === "file" ? (
                     <FormFileInput
                       className="dark:file:text-gray-300 dark:file:pe-2"

@@ -1,6 +1,31 @@
 ---
 import { packages } from "@/data/nwd-26/packages"
+import { getPackageSales } from "@/lib/services/registrationService"
+import { createSupabaseServerClient } from "@/lib/supabase"
 import PackageCard from "./PackageCard.astro"
+
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
+const sales = await getPackageSales(supabase, "nwd-26")
+const normalize = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+
+const packagesWithSales = packages.map(packageData => {
+  const match = sales.find(({ packageName }) => {
+    const name = normalize(packageName)
+    return (
+      name.includes(normalize(packageData.firstName)) &&
+      name.includes(normalize(packageData.lastName))
+    )
+  })
+  const total = 12
+  const sold = Math.max(0, match?.soldCount ?? 0)
+  const percentage = Math.min(100, Math.round((sold / total) * 100))
+
+  return { packageData, availability: { sold, total, percentage } }
+})
 ---
 
 <section
@@ -16,7 +41,9 @@ import PackageCard from "./PackageCard.astro"
     </header>
 
     <div class="packages-grid">
-      {packages.map(pkg => <PackageCard packageData={pkg} />)}
+      {packagesWithSales.map(({ packageData, availability }) => (
+        <PackageCard packageData={packageData} availability={availability} />
+      ))}
     </div>
   </div>
 </section>
