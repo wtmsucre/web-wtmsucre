@@ -10,10 +10,11 @@ import {
 interface FormSelectProps {
   label: string
   options: string[]
+  disabledOptions?: string[] | null
   field: ControllerRenderProps
 }
 
-export const FormSelect = ({ label, options, field }: FormSelectProps) => {
+export const FormSelect = ({ label, options, disabledOptions, field }: FormSelectProps) => {
   return (
     <Select onValueChange={field.onChange} defaultValue={field.value}>
       <SelectTrigger className="w-full">
@@ -21,7 +22,7 @@ export const FormSelect = ({ label, options, field }: FormSelectProps) => {
       </SelectTrigger>
       <SelectContent>
         {options?.map((option: string) => (
-          <SelectItem key={option} value={option}>
+          <SelectItem key={option} value={option} disabled={disabledOptions?.includes(option)}>
             {option}
           </SelectItem>
         ))}

@@ -4,9 +4,10 @@ import type { EventPackage } from "@/data/nwd-26/packages"
 
 interface Props {
   packageData: EventPackage
+  availability?: { sold: number; total: number; percentage: number }
 }
 
-const { packageData } = Astro.props
+const { packageData, availability } = Astro.props
 const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, "").trim()
 ---
 
@@ -56,6 +57,7 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
         <span>Bs.</span>
         {packageData.price}
       </p>
+
     </div>
 
     <span class="benefits-divider" aria-hidden="true"></span>
@@ -69,6 +71,23 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
         ))
       }
     </ul>
+
+    {availability && (
+      <div class="package-availability" aria-label={`${availability.sold} de ${availability.total} paquetes vendidos`}>
+        <div class="availability-label">
+          <span class:list={{ "availability-status--available": availability.percentage < 50 }}>
+            {availability.percentage < 50
+              ? "Disponible"
+              : `${availability.percentage}% de paquetes vendidos`}
+          </span>
+        </div>
+        {availability.percentage >= 50 && (
+          <div class="availability-track" role="progressbar" aria-valuemin="0" aria-valuemax={availability.total} aria-valuenow={availability.sold}>
+            <span style={{ width: `${availability.percentage}%` }}></span>
+          </div>
+        )}
+      </div>
+    )}
   </div>
 </article>
 
@@ -215,6 +234,50 @@ const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, ""
   .price span {
     font-size: 0.72em;
     letter-spacing: -0.03em;
+  }
+
+  .package-availability {
+    margin: 7cqw 6.25% 0;
+    color: #526c9b;
+    font-size: 4.2cqw;
+    line-height: 1.2;
+  }
+
+  .availability-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 1cqw;
+    white-space: nowrap;
+  }
+
+  .availability-track {
+    height: 2.4cqw;
+    margin-top: 2cqw;
+    overflow: hidden;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pkg-accent) 16%, white);
+  }
+
+  .availability-status--available {
+    display: inline-block;
+    padding: 1.8cqw 3.2cqw;
+    border: 1px solid color-mix(in srgb, var(--pkg-accent) 42%, white);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pkg-accent) 14%, white);
+    color: var(--pkg-accent);
+    font-size: 5.5cqw;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    box-shadow: 0 3px 10px color-mix(in srgb, var(--pkg-accent) 12%, transparent);
+  }
+
+  .availability-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--pkg-accent);
+    transition: width 300ms ease;
   }
 
   .benefits-divider {

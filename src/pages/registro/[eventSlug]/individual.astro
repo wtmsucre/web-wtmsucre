@@ -8,7 +8,7 @@ import BaseLayout from "@/layout/BaseLayout.astro"
 import { getEvent } from "@/lib/services/eventService"
 import { getFormFieldsByEvent } from "@/lib/services/formService"
 import { getProfile } from "@/lib/services/profileService"
-import { getEventRegistration } from "@/lib/services/registrationService"
+import { getEventRegistration, getPackageSales } from "@/lib/services/registrationService"
 
 import { createSupabaseServerClient } from "@/lib/supabase"
 
@@ -32,7 +32,33 @@ if (registration?.status === "confirmed") {
   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
-const formFields = await getFormFieldsByEvent(supabase, event?.id)
+let formFields = await getFormFieldsByEvent(supabase, event?.id)
+
+if (eventSlug === "nwd-26") {
+  const sales = await getPackageSales(supabase, eventSlug)
+  const normalize = (value: string) =>
+    value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+  const soldOutOptions = formFields
+    .find(field => field.name === "package")
+    ?.options?.filter(option => {
+      const sale = sales.find(({ packageName }) => normalize(packageName) === normalize(option))
+      return (sale?.soldCount ?? 0) >= 12
+    })
+
+  if (soldOutOptions?.length) {
+    formFields = formFields.map(field =>
+      field.name === "package"
+        ? {
+            ...field,
+            options: field.options?.filter(option => !soldOutOptions.includes(option)),
+          }
+        : field
+    )
+  }
+}
 ---
 
 <BaseLayout theme="light">
@@ -51,4 +77,3 @@ const formFields = await getFormFieldsByEvent(supabase, event?.id)
     </div>
   </main>
 </BaseLayout>
-
