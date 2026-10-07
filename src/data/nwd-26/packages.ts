@@ -21,8 +21,16 @@ export interface PackageColors {
   blob: string // Gradiente detrás del personaje
 }
 
+export const NWD26_PACKAGE_CAPACITIES = {
+  juana: 30,
+  bartolina: 18,
+  adela: 12,
+} as const
+
+export type Nwd26PackageId = keyof typeof NWD26_PACKAGE_CAPACITIES
+
 export interface EventPackage {
-  id: "bartolina" | "adela" | "juana"
+  id: Nwd26PackageId
   packageNumber: number
   firstName: string
   lastName: string
@@ -67,7 +75,7 @@ export const packages: EventPackage[] = [
       { label: "Credencial", type: "credential" },
       { label: "Stickers", type: "stickers" },
     ],
-    totalUnits: 30,
+    totalUnits: NWD26_PACKAGE_CAPACITIES.juana,
     availability: { enabled: false, percentage: 100, status: "available" },
   },
   {
@@ -100,7 +108,7 @@ export const packages: EventPackage[] = [
       },
       { label: "Stickers", type: "stickers" },
     ],
-    totalUnits: 18,
+    totalUnits: NWD26_PACKAGE_CAPACITIES.bartolina,
     availability: { enabled: false, percentage: 100, status: "available" },
   },
   {
@@ -130,7 +138,24 @@ export const packages: EventPackage[] = [
       { label: "Scrunchie", type: "scrunchie" },
       { label: "Stickers", type: "stickers" },
     ],
-    totalUnits: 12,
+    totalUnits: NWD26_PACKAGE_CAPACITIES.adela,
     availability: { enabled: false, percentage: 100, status: "available" },
   },
 ]
+
+const normalizePackageName = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+
+/** Finds the configured package from the value saved by the registration form. */
+export function getNwd26PackageByName(name: string) {
+  const normalizedName = normalizePackageName(name)
+
+  return packages.find(
+    packageData =>
+      normalizedName.includes(packageData.id) ||
+      normalizedName.includes(normalizePackageName(packageData.firstName))
+  )
+}
