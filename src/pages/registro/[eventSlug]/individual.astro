@@ -3,6 +3,7 @@
 import NwdHeader from "@/components/events/nwd-26/Header.astro"
 import { RegisterForm } from "@/components/registration/RegisterForm"
 import { NWD26_LANDING_HREF } from "@/data/nwd-26/nav"
+import { getNwd26PackageByName } from "@/data/nwd-26/packages"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEvent } from "@/lib/services/eventService"
@@ -36,16 +37,17 @@ let formFields = await getFormFieldsByEvent(supabase, event?.id)
 
 if (eventSlug === "nwd-26") {
   const sales = await getPackageSales(supabase, eventSlug)
-  const normalize = (value: string) =>
-    value
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
   const soldOutOptions = formFields
     .find(field => field.name === "package")
     ?.options?.filter(option => {
-      const sale = sales.find(({ packageName }) => normalize(packageName) === normalize(option))
-      return (sale?.soldCount ?? 0) >= 12
+      const packageData = getNwd26PackageByName(option)
+      if (!packageData) return false
+
+      const soldCount = sales
+        .filter(({ packageName }) => getNwd26PackageByName(packageName)?.id === packageData.id)
+        .reduce((total, { soldCount }) => total + soldCount, 0)
+
+      return soldCount >= packageData.totalUnits
     })
 
   if (soldOutOptions?.length) {

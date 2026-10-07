@@ -1,4 +1,5 @@
 import { FunctionsHttpError, type SupabaseClient } from "@supabase/supabase-js"
+import { getNwd26PackageByName } from "@/data/nwd-26/packages"
 import { customAlphabetNanoid } from "@/lib/utils"
 
 async function uploadFile(
@@ -93,10 +94,18 @@ export async function submitRegistration(
     }
   }
 
-  if (typeof fields.package === "string") {
+  if (event_slug === "nwd-26" && typeof fields.package === "string") {
+    const selectedPackage = getNwd26PackageByName(fields.package)
     const packageSales = await getPackageSales(supabase, String(event_slug))
-    const selected = packageSales.find(({ packageName }) => packageName === fields.package)
-    if (selected && selected.soldCount >= 12) {
+    const soldCount = selectedPackage
+      ? packageSales
+          .filter(
+            ({ packageName }) => getNwd26PackageByName(packageName)?.id === selectedPackage.id
+          )
+          .reduce((total, { soldCount }) => total + soldCount, 0)
+      : 0
+
+    if (selectedPackage && soldCount >= selectedPackage.totalUnits) {
       throw new Error("Este paquete ya no tiene unidades disponibles")
     }
   }
