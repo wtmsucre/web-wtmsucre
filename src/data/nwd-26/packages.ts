@@ -34,6 +34,7 @@ export interface EventPackage {
   colors: PackageColors
   featured: boolean
   features: { label: string; type: PackageFeatureType }[]
+  totalUnits: number
   availability: {
     enabled: boolean
     percentage: number
@@ -66,6 +67,7 @@ export const packages: EventPackage[] = [
       { label: "Credencial", type: "credential" },
       { label: "Stickers", type: "stickers" },
     ],
+    totalUnits: 30,
     availability: { enabled: false, percentage: 100, status: "available" },
   },
   {
@@ -98,6 +100,7 @@ export const packages: EventPackage[] = [
       },
       { label: "Stickers", type: "stickers" },
     ],
+    totalUnits: 18,
     availability: { enabled: false, percentage: 100, status: "available" },
   },
   {
@@ -127,6 +130,7 @@ export const packages: EventPackage[] = [
       { label: "Scrunchie", type: "scrunchie" },
       { label: "Stickers", type: "stickers" },
     ],
+    totalUnits: 12,
     availability: { enabled: false, percentage: 100, status: "available" },
   },
 ]

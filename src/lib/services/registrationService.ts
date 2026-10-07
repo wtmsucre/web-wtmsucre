@@ -165,7 +165,10 @@ export interface PackageSales {
 }
 
 /** Returns aggregate sales only; individual registration data stays private. */
-export async function getPackageSales(supabase: SupabaseClient, eventSlug: string) {
+export async function getPackageSales(
+  supabase: SupabaseClient,
+  eventSlug: string
+): Promise<PackageSales[]> {
   const { data, error } = await supabase.rpc("get_package_sales", {
     p_event_slug: eventSlug,
   })
@@ -175,7 +178,7 @@ export async function getPackageSales(supabase: SupabaseClient, eventSlug: strin
     return [] as PackageSales[]
   }
 
-  return (data ?? []).map(row => ({
+  return (data ?? []).map((row: unknown) => ({
     packageName: String((row as { package_name?: unknown }).package_name ?? ""),
     soldCount: Number((row as { sold_count?: unknown }).sold_count ?? 0),
   }))
