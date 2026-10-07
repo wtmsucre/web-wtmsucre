@@ -20,7 +20,7 @@ const packagesWithSales = packages.map(packageData => {
       name.includes(normalize(packageData.lastName))
     )
   })
-  const total = 12
+  const total = packageData.totalUnits
   const sold = Math.max(0, match?.soldCount ?? 0)
   const percentage = Math.min(100, Math.round((sold / total) * 100))
 
