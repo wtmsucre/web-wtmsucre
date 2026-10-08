@@ -23,7 +23,7 @@ export interface PackageColors {
 
 export const NWD26_PACKAGE_CAPACITIES = {
   juana: 30,
-  bartolina: 18,
+  bartolina: 20,
   adela: 12,
 } as const
 
