@@ -1,0 +1,194 @@
+---
+import { Image } from "astro:assets"
+import type { AgendaItem } from "@/data/nwd-26/agenda"
+
+interface Props {
+  item: AgendaItem
+  index: number
+  total: number
+}
+
+const { item, index, total } = Astro.props
+
+const isTalk = item.type === "talk"
+const isBreak = item.type === "break"
+const isClose = item.type === "close"
+const isRight = item.side === "right"
+const isFirst = index === 0
+const isLast = index === total - 1
+---
+
+<article
+  class:list={[
+    "row grid gap-3 items-center mb-2",
+    isRight ? "row--right" : "row--left",
+    isFirst && "row--first",
+    isLast && "row--last",
+  ]}
+  style={isTalk ? `--photo-bg:${item.bgPhoto}; --blob:${item.blob}` : undefined}
+>
+  {
+    isTalk ? (
+      <div class="media relative h-[270px] w-[220px] max-[720px]:h-[230px] max-[720px]:w-[190px]">
+        <span
+          class:list={[
+            "absolute top-12 size-[210px] rounded-full max-[720px]:top-10 max-[720px]:size-[170px] max-[720px]:left-auto max-[720px]:-right-5",
+            isRight ? "-right-7 max-[720px]:-right-5" : "-left-7",
+          ]}
+          style="background:var(--blob)"
+          aria-hidden="true"
+        />
+        <div
+          class="absolute inset-y-0 inset-x-3.5 overflow-hidden rounded-t-full rounded-b-[22px]"
+          style="background:var(--photo-bg)"
+        >
+          <Image
+            src={item.image}
+            alt={`Foto de ${item.speaker}`}
+            width={300}
+            class="block size-full object-cover object-top"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
+    ) : (
+      <div class="media" aria-hidden="true" />
+    )
+  }
+
+  <div class="node relative flex flex-col items-center justify-center self-stretch">
+    <svg class="relative size-11 bg-[#FAFCFF] py-[3px]" aria-hidden="true" width="44" height="44" viewBox="0 0 40 40">
+      <path
+        d="M20 2Q23 17 38 20Q23 23 20 38Q17 23 2 20Q17 17 20 2Z"
+        fill={isClose ? "var(--color-nwd-blue-dark)" : "var(--color-nwd-yellow)"}
+      />
+    </svg>
+    <span
+      class:list={[
+        "relative mt-0.5 rounded-[10px] border-[1.5px] bg-[#FAFCFF] px-[9px] py-[3px] text-sm font-medium text-nwd-blue-dark",
+        isClose ? "border-nwd-blue-dark" : "border-nwd-yellow",
+      ]}
+    >
+      {item.time}
+    </span>
+  </div>
+
+  <div class="info px-1.5 py-2">
+    {isTalk && <span class="topic">{item.topic}</span>}
+    {isBreak && (
+      <div
+        class:list={[
+          "inline-block rounded-[18px] border-[1.5px] border-nwd-teal bg-[#E3F6F9] px-[18px] py-3",
+          isRight ? "text-right max-[720px]:text-left" : "text-left",
+        ]}
+      >
+        <p class="m-0 text-[11px] font-bold uppercase tracking-[0.28em] text-[#0F8FA3]">
+          {item.eyebrow}
+        </p>
+        <h3 class="mt-0.5 mb-0 text-[19px] font-bold leading-[1.2] text-nwd-blue-dark">
+          {item.title}
+        </h3>
+        <p class="mt-0.5 mb-0 text-xs text-[#4b6593]">{item.meta}</p>
+      </div>
+    )}
+    {!isBreak && <h3 class="talk">{item.title}</h3>}
+    {!isBreak && <p class="speaker">{item.speaker}</p>}
+  </div>
+</article>
+
+<style>
+  .row {
+    grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr);
+    grid-template-areas: "media node info";
+  }
+  .row--right {
+    grid-template-areas: "info node media";
+  }
+
+  .media {
+    grid-area: media;
+    justify-self: end;
+  }
+  .row--right .media {
+    justify-self: start;
+  }
+
+  .node {
+    grid-area: node;
+  }
+  .info {
+    grid-area: info;
+  }
+  .row--right .info {
+    text-align: right;
+  }
+
+  /* Línea punteada del timeline; se recorta en la primera y última fila. */
+  .node::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-1.5px);
+    border-left: 3px dotted var(--color-nwd-blue);
+  }
+  .row--first .node::before {
+    top: 20%;
+  }
+  .row--last .node::before {
+    bottom: 50%;
+  }
+
+  /* Pastilla de tema (charlas) */
+  .topic {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-nwd-blue-dark);
+    background: var(--color-nwd-yellow);
+    border-radius: 999px;
+  }
+
+  .talk {
+    margin: 10px 0 6px;
+    font-size: clamp(18px, 2vw, 22px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-nwd-blue);
+  }
+  .speaker {
+    margin: 0;
+    font-size: 14px;
+    color: #4b6593;
+  }
+
+  @media (max-width: 720px) {
+    .row,
+    .row--right {
+      grid-template-columns: 64px minmax(0, 1fr);
+      grid-template-areas:
+        "node media"
+        "node info";
+      gap: 4px 14px;
+      align-items: start;
+      margin-bottom: 20px;
+    }
+    .media,
+    .row--right .media {
+      justify-self: start;
+    }
+    .row--right .info {
+      text-align: left;
+    }
+    .node {
+      justify-content: flex-start;
+      padding-top: 8px;
+    }
+    .row--first .node::before {
+      top: 8px;
+    }
+  }
+</style>
