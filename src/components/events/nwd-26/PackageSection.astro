@@ -1,0 +1,113 @@
+---
+import { packages } from "@/data/nwd-26/packages"
+import { getPackageSales } from "@/lib/services/registrationService"
+import { createSupabaseServerClient } from "@/lib/supabase"
+import PackageCard from "./PackageCard.astro"
+
+const supabase = createSupabaseServerClient({ request: Astro.request, cookies: Astro.cookies })
+const sales = await getPackageSales(supabase, "nwd-26")
+const normalize = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+
+const packagesWithSales = packages.map(packageData => {
+  const match = sales.find(({ packageName }) => {
+    const name = normalize(packageName)
+    return (
+      name.includes(normalize(packageData.firstName)) &&
+      name.includes(normalize(packageData.lastName))
+    )
+  })
+  const total = packageData.totalUnits
+  const sold = Math.max(0, match?.soldCount ?? 0)
+  const percentage = Math.min(100, Math.round((sold / total) * 100))
+
+  return { packageData, availability: { sold, total, percentage } }
+})
+---
+
+<section
+  id="paquetes"
+  class="packages-section relative z-[1] px-4 sm:px-6 lg:px-14 pb-10 md:pb-14 lg:pb-16"
+  aria-labelledby="packages-title"
+>
+  <div class="relative z-[1] max-w-[1040px] mx-auto">
+    <header class="max-w-[720px] mb-7 md:mb-8">
+      <p class="packages-section__eyebrow">Elige cómo participar</p>
+      <h2 id="packages-title">Paquetes</h2>
+      <p class="packages-section__subtitle">Conoce lo que incluye cada paquete.</p>
+    </header>
+
+    <div class="packages-grid">
+      {packagesWithSales.map(({ packageData, availability }) => (
+        <PackageCard packageData={packageData} availability={availability} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .packages-section {
+    background: transparent;
+  }
+
+  .packages-section__eyebrow {
+    margin: 0 0 10px;
+    color: var(--color-nwd-teal, #10a7bc);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--color-nwd-blue, #1355cc);
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+
+  .packages-section__subtitle {
+    max-width: 700px;
+    margin: 18px 0 0;
+    color: #4b6593;
+    font-size: clamp(14px, 1.35vw, 17px);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(8px, 2vw, 28px);
+    align-items: stretch;
+  }
+
+  @media (max-width: 639px) {
+    .packages-section {
+      padding-inline: 14px;
+    }
+
+    .packages-section__eyebrow {
+      margin-bottom: 8px;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+    }
+
+    .packages-section__subtitle {
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    .packages-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+</style>

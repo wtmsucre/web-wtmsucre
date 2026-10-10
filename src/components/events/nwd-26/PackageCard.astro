@@ -1,0 +1,461 @@
+---
+import { Image } from "astro:assets"
+import type { EventPackage } from "@/data/nwd-26/packages"
+
+interface Props {
+  packageData: EventPackage
+  availability?: { sold: number; total: number; percentage: number }
+}
+
+const { packageData, availability } = Astro.props
+const displayFeatureLabel = (label: string) => label.replace(/\s*\([^)]*\)/g, "").trim()
+---
+
+<article
+  class:list={[
+    "package-card",
+    `package-card--${packageData.id}`,
+    packageData.featured && "package-card--featured",
+  ]}
+  style={{
+    "--pkg-accent": packageData.colors.accent,
+    "--pkg-border": packageData.colors.border,
+    "--pkg-card-bg": packageData.colors.cardBg ?? "#ffffff",
+    "--pkg-price-bg": packageData.colors.priceBg,
+    "--pkg-divider": packageData.colors.divider,
+    "--pkg-bullet": packageData.colors.bullet,
+    "--pkg-blob": packageData.colors.blob,
+  }}
+>
+  <span class="illustration-accent" aria-hidden="true"></span>
+
+  <div class="character-area" aria-hidden="true">
+    <span class="character-blob"></span>
+    <Image
+      src={packageData.image}
+      alt={packageData.imageAlt}
+      widths={[320, 420, 560]}
+      sizes="(max-width: 639px) 230px, (max-width: 899px) 260px, 220px"
+      loading="lazy"
+      decoding="async"
+      class="character-image"
+    />
+  </div>
+
+  <div class="package-content">
+    <div class="package-main">
+      <p class="package-number">PAQUETE #{packageData.packageNumber}</p>
+
+      <div class="package-heading">
+        <h3>{packageData.firstName}</h3>
+        <p class="package-name">{packageData.lastName}</p>
+      </div>
+
+      <p class="package-description">{packageData.description}</p>
+
+      <p class="price">
+        <span>Bs.</span>
+        {packageData.price}
+      </p>
+
+    </div>
+
+    <span class="benefits-divider" aria-hidden="true"></span>
+
+    <ul class="benefits">
+      {
+        packageData.features.map((item) => (
+          <li class="benefit">
+            <span class="benefit-label">{displayFeatureLabel(item.label)}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    {availability && (
+      <div class="package-availability" aria-label={`${availability.sold} de ${availability.total} paquetes vendidos`}>
+        <div class="availability-label">
+          <span class:list={{ "availability-status--available": availability.percentage < 50 }}>
+            {availability.percentage < 50
+              ? "Disponible"
+              : `${availability.percentage}% de paquetes vendidos`}
+          </span>
+        </div>
+        {availability.percentage >= 50 && (
+          <div class="availability-track" role="progressbar" aria-valuemin="0" aria-valuemax={availability.total} aria-valuenow={availability.sold}>
+            <span style={{ width: `${availability.percentage}%` }}></span>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+</article>
+
+<style>
+  .package-card {
+    position: relative;
+    min-width: 0;
+    min-height: clamp(250px, 100cqw, 300px);
+    overflow: hidden;
+    isolation: isolate;
+    container-type: inline-size;
+
+    border: 1px solid var(--pkg-border);
+    border-radius: 16px;
+    background: var(--pkg-card-bg);
+    box-shadow: 0 8px 24px rgba(31, 80, 130, 0.035);
+  }
+
+  .package-card--featured {
+    box-shadow: 0 8px 24px rgba(187, 139, 21, 0.045);
+  }
+
+  .package-content {
+    position: relative;
+    box-sizing: border-box;
+    z-index: 4;
+    width: 100%;
+    min-height: clamp(250px, 100cqw, 300px);
+    padding-bottom: clamp(14px, 5cqw, 18px);
+  }
+
+  .package-main {
+    position: relative;
+    min-height: clamp(190px, 84cqw, 282px);
+  }
+
+  .package-number {
+    position: absolute;
+    top: 7.5cqw;
+    left: 6.35%;
+    margin: 0;
+
+    color: var(--pkg-accent);
+    font-size: 3.15cqw;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.27em;
+    white-space: nowrap;
+  }
+
+  .package-heading {
+    position: absolute;
+    z-index: 5;
+    top: 16.8cqw;
+    left: 6.2%;
+    width: 68%;
+  }
+
+  .package-heading h3 {
+    margin: 0;
+    color: var(--color-nwd-blue, #1355cc);
+    font-size: 10.55cqw;
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.055em;
+    white-space: nowrap;
+  }
+
+  .package-card--bartolina .package-heading h3 {
+    font-size: 10.75cqw;
+  }
+
+  .package-card--adela .package-heading h3 {
+    font-size: 11.55cqw;
+  }
+
+  .package-card--juana .package-heading h3 {
+    font-size: 10.75cqw;
+  }
+
+  .package-name {
+    margin: 1.05cqw 0 0 0.45cqw;
+    color: var(--pkg-accent);
+    font-family: "Georado", var(--font-grotesk);
+    font-weight: 400;
+    line-height: 0.78;
+    white-space: nowrap;
+    transform: rotate(-2deg) scaleX(1.035);
+    transform-origin: left center;
+  }
+
+  .package-card--juana .package-name {
+    font-size: 18cqw;
+  }
+
+  .package-card--bartolina .package-name {
+    font-size: 18cqw;
+  }
+
+  .package-card--adela .package-name {
+    font-size: 18cqw;
+  }
+
+  .package-description {
+    position: absolute;
+    z-index: 5;
+    top: 46.2cqw;
+    left: 6.4%;
+    width: 44%;
+    margin: 0;
+
+    color: #526c9b;
+    font-size: 3.68cqw;
+    font-weight: 500;
+    line-height: 1.28;
+    text-wrap: pretty;
+  }
+
+  .price {
+    position: absolute;
+    z-index: 6;
+    top: 61.5cqw;
+    left: 6.25%;
+
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 1.15cqw;
+
+    min-width: 39.5%;
+    margin: 0;
+    padding: 2.35cqw 4.5cqw 2.45cqw;
+    border-radius: 3cqw;
+
+    background: var(--pkg-price-bg);
+    color: #0b3fa0;
+    font-size: 8.65cqw;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    white-space: nowrap;
+  }
+
+  .price span {
+    font-size: 0.72em;
+    letter-spacing: -0.03em;
+  }
+
+  .package-availability {
+    margin: 7cqw 6.25% 0;
+    color: #526c9b;
+    font-size: 4.2cqw;
+    line-height: 1.2;
+  }
+
+  .availability-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 1cqw;
+    white-space: nowrap;
+  }
+
+  .availability-track {
+    height: 2.4cqw;
+    margin-top: 2cqw;
+    overflow: hidden;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pkg-accent) 16%, white);
+  }
+
+  .availability-status--available {
+    display: inline-block;
+    padding: 1.8cqw 3.2cqw;
+    border: 1px solid color-mix(in srgb, var(--pkg-accent) 42%, white);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pkg-accent) 14%, white);
+    color: var(--pkg-accent);
+    font-size: 5.5cqw;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    box-shadow: 0 3px 10px color-mix(in srgb, var(--pkg-accent) 12%, transparent);
+  }
+
+  .availability-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--pkg-accent);
+    transition: width 300ms ease;
+  }
+
+  .benefits-divider {
+    display: block;
+    height: 1px;
+    margin: 0 6.25%;
+    background: var(--pkg-divider);
+  }
+
+  .benefits {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    align-content: start;
+    column-gap: 4.4cqw;
+    row-gap: 3.7cqw;
+
+    margin: 7.2cqw 6.25% 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .benefit {
+    display: flex;
+    align-items: center;
+    gap: 2.35cqw;
+    min-height: 6.2cqw;
+
+    color: #123d83;
+    font-size: 4.15cqw;
+    font-weight: 450;
+    line-height: 1.15;
+  }
+
+  .benefit::before {
+    width: 2.1cqw;
+    height: 2.1cqw;
+    flex: 0 0 2.1cqw;
+    border-radius: 50%;
+    background: var(--pkg-bullet);
+    content: "";
+  }
+
+  .benefit-label {
+    min-width: 0;
+    text-wrap: pretty;
+  }
+
+  .character-area {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 0;
+  }
+
+  .character-blob {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--pkg-blob);
+  }
+
+  .character-area :global(.character-image) {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    max-width: none;
+    object-fit: contain;
+    object-position: right bottom;
+    filter: drop-shadow(0 1.2cqw 1.7cqw rgba(28, 72, 125, 0.035));
+    user-select: none;
+  }
+
+  /* Bartolina */
+  .package-card--bartolina .character-area {
+    top: 5cqw;
+    right: -2.4%;
+    width: 63.5%;
+    height: calc(clamp(190px, 84cqw, 282px) - 5cqw);
+    clip-path: ellipse(91% 72% at 79% 29%);
+  }
+
+  .package-card--bartolina .character-blob {
+    inset: 7% -11% -2% 0;
+    border-radius: 58% 0 0 58%;
+  }
+
+  .package-card--bartolina .character-area :global(.character-image) {
+    right: -1.5%;
+    bottom: -0.2%;
+    width: auto;
+    height: 101%;
+  }
+
+  /* Adela */
+  .package-card--adela .character-area {
+    top: 5cqw;
+    right: -2%;
+    width: 63.5%;
+    height: calc(clamp(190px, 84cqw, 282px) - 5cqw);
+    clip-path: ellipse(90% 71% at 79% 29%);
+  }
+
+  .package-card--adela .character-blob {
+    inset: 7% -11% -2% 0;
+    border-radius: 58% 0 0 58%;
+  }
+
+  .package-card--adela .character-area :global(.character-image) {
+    right: -0.8%;
+    bottom: -0.4%;
+    width: auto;
+    height: 101%;
+  }
+
+  /* Juana */
+  .package-card--juana .character-area {
+    top: 5cqw;
+    right: -3%;
+    width: 68%;
+    height: calc(clamp(190px, 84cqw, 282px) - 5cqw);
+    clip-path: ellipse(92% 72% at 80% 28%);
+  }
+
+  .package-card--juana .character-blob {
+    inset: 7% -11% -2% 0;
+    border-radius: 58% 0 0 58%;
+  }
+
+  .package-card--juana .character-area :global(.character-image) {
+    right: -0.5%;
+    bottom: -0.2%;
+    width: auto;
+    height: 100.5%;
+  }
+
+  .illustration-accent {
+    position: absolute;
+    z-index: 3;
+    top: 11.5cqw;
+    right: 7.4%;
+    width: 4.6cqw;
+    height: 1cqw;
+    border-radius: 999px;
+    background: var(--pkg-accent);
+    transform: rotate(-42deg);
+    pointer-events: none;
+  }
+
+  .illustration-accent::after {
+    position: absolute;
+    top: 2.15cqw;
+    left: 1.55cqw;
+    width: 4.6cqw;
+    height: 1cqw;
+    border-radius: inherit;
+    background: inherit;
+    content: "";
+  }
+
+  @media (max-width: 639px) {
+    .package-card {
+      min-height: clamp(390px, 124cqw, 470px);
+    }
+
+    .package-content {
+      min-height: clamp(390px, 124cqw, 470px);
+    }
+
+    .package-main {
+      min-height: 82cqw;
+    }
+
+    .benefits {
+      margin-top: 6.5cqw;
+      row-gap: 3.3cqw;
+    }
+  }
+</style>

@@ -2,12 +2,14 @@
 // import IoExtendedHeader from "@/components/events/io-extended-26/Header.astro"
 import NwdHeader from "@/components/events/nwd-26/Header.astro"
 import { RegisterForm } from "@/components/registration/RegisterForm"
+import { NWD26_LANDING_HREF } from "@/data/nwd-26/nav"
+import { getNwd26PackageByName } from "@/data/nwd-26/packages"
 import BaseLayout from "@/layout/BaseLayout.astro"
 
 import { getEvent } from "@/lib/services/eventService"
 import { getFormFieldsByEvent } from "@/lib/services/formService"
 import { getProfile } from "@/lib/services/profileService"
-import { getEventRegistration } from "@/lib/services/registrationService"
+import { getEventRegistration, getPackageSales } from "@/lib/services/registrationService"
 
 import { createSupabaseServerClient } from "@/lib/supabase"
 
@@ -31,13 +33,40 @@ if (registration?.status === "confirmed") {
   return Astro.redirect(`/registro/${eventSlug}/confirmado`)
 }
 
-const formFields = await getFormFieldsByEvent(supabase, event?.id)
+let formFields = await getFormFieldsByEvent(supabase, event?.id)
+
+if (eventSlug === "nwd-26") {
+  const sales = await getPackageSales(supabase, eventSlug)
+  const soldOutOptions = formFields
+    .find(field => field.name === "package")
+    ?.options?.filter(option => {
+      const packageData = getNwd26PackageByName(option)
+      if (!packageData) return false
+
+      const soldCount = sales
+        .filter(({ packageName }) => getNwd26PackageByName(packageName)?.id === packageData.id)
+        .reduce((total, { soldCount }) => total + soldCount, 0)
+
+      return soldCount >= packageData.totalUnits
+    })
+
+  if (soldOutOptions?.length) {
+    formFields = formFields.map(field =>
+      field.name === "package"
+        ? {
+            ...field,
+            options: field.options?.filter(option => !soldOutOptions.includes(option)),
+          }
+        : field
+    )
+  }
+}
 ---
 
-<BaseLayout theme="dark">
-  <NwdHeader />
-  <main class="bg-io-bg flex min-h-screen pt-[64px] md:pt-[96px] text-io-text">
-    <div class="mx-auto px-4 pb-16">
+<BaseLayout theme="light">
+  <NwdHeader landingHref={NWD26_LANDING_HREF} />
+  <main class="bg-nwd-paper flex flex-1 py-8 sm:py-12 text-nwd-ink">
+    <div class="mx-auto w-full max-w-lg px-4 pb-16">
       <h1 class="text-xl mb-4 font-medium">Regístrate al {event.name}</h1>
       {
         eventSlug == "bwai-26" && (
@@ -46,31 +75,7 @@ const formFields = await getFormFieldsByEvent(supabase, event?.id)
           </p>
         )
       }
-      <div class="io-register-form">
-        <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
-      </div>
+      <RegisterForm formFields={formFields} profile={profile} event={event} client:load />
     </div>
   </main>
 </BaseLayout>
-
-<style is:global>
-  .io-register-form label {
-    color: var(--color-io-text);
-  }
-
-  .io-register-form input {
-    color: var(--color-io-text);
-  }
-
-  .io-register-form input::placeholder {
-    color: var(--color-io-text-muted);
-  }
-
-  .io-register-form [data-slot="select-trigger"] {
-    color: var(--color-io-text);
-  }
-
-  .io-register-form [data-slot="select-trigger"] span {
-    color: var(--color-io-text-muted);
-  }
-</style>

@@ -1,4 +1,5 @@
 import { FunctionsHttpError, type SupabaseClient } from "@supabase/supabase-js"
+import { getNwd26PackageByName } from "@/data/nwd-26/packages"
 import { customAlphabetNanoid } from "@/lib/utils"
 
 async function uploadFile(
@@ -93,6 +94,22 @@ export async function submitRegistration(
     }
   }
 
+  if (event_slug === "nwd-26" && typeof fields.package === "string") {
+    const selectedPackage = getNwd26PackageByName(fields.package)
+    const packageSales = await getPackageSales(supabase, String(event_slug))
+    const soldCount = selectedPackage
+      ? packageSales
+          .filter(
+            ({ packageName }) => getNwd26PackageByName(packageName)?.id === selectedPackage.id
+          )
+          .reduce((total, { soldCount }) => total + soldCount, 0)
+      : 0
+
+    if (selectedPackage && soldCount >= selectedPackage.totalUnits) {
+      throw new Error("Este paquete ya no tiene unidades disponibles")
+    }
+  }
+
   const { error: insertError } = await supabase.from("registrations").insert([
     {
       user_id: user.id,
@@ -151,6 +168,31 @@ export async function getRegistrationsByEvent(
   return flattenedRegistrations
 }
 
+export interface PackageSales {
+  packageName: string
+  soldCount: number
+}
+
+/** Returns aggregate sales only; individual registration data stays private. */
+export async function getPackageSales(
+  supabase: SupabaseClient,
+  eventSlug: string
+): Promise<PackageSales[]> {
+  const { data, error } = await supabase.rpc("get_package_sales", {
+    p_event_slug: eventSlug,
+  })
+
+  if (error) {
+    console.error(`Error obteniendo ventas de paquetes: ${error.message}`)
+    return [] as PackageSales[]
+  }
+
+  return (data ?? []).map((row: unknown) => ({
+    packageName: String((row as { package_name?: unknown }).package_name ?? ""),
+    soldCount: Number((row as { sold_count?: unknown }).sold_count ?? 0),
+  }))
+}
+
 export async function confirmRegistration(supabase: SupabaseClient, registrationId: number) {
   const { data: registration, error: findError } = await supabase
     .from("registrations")
@@ -163,9 +205,9 @@ export async function confirmRegistration(supabase: SupabaseClient, registration
   }
 
   // Skip token generation if exists
-  // if (registration.token) {
-  //   return { success: true, token: registration.token }
-  // }
+  if (registration.token) {
+    return { success: true, token: registration.token }
+  }
 
   const token = customAlphabetNanoid(6)
 
