@@ -103,6 +103,7 @@ export function QRScanner({ eventSlug, activities }: QRScannerProps) {
       if (!response.ok) {
         const body = await response.json()
         toast.error(body.error)
+        return
       }
 
       toast.success(
@@ -170,7 +171,7 @@ export function QRScanner({ eventSlug, activities }: QRScannerProps) {
       <Toaster position="top-right" richColors />
 
       <div className="flex gap-4 mb-8">
-        <Select onValueChange={value => setActivity(value)} defaultValue="check_in">
+        <Select value={activity} onValueChange={setActivity}>
           <SelectTrigger className="w-50">
             <SelectValue placeholder="Selecciona una actividad" />
           </SelectTrigger>
@@ -213,6 +214,9 @@ export function QRScanner({ eventSlug, activities }: QRScannerProps) {
           classNames={["rounded-md"]}
           onScan={handleOnScan}
           formats={["qr_code"]}
+          allowMultiple
+          scanDelay={COOLDOWN_MS}
+          paused={dialogOpen}
           constraints={{
             facingMode: "environment",
             deviceId: selectedDevice,
