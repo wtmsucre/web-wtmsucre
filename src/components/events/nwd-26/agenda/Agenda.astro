@@ -1,0 +1,33 @@
+---
+import { agenda } from "@/data/nwd-26/agenda"
+import AgendaItem from "./AgendaItem.astro"
+---
+
+<section
+  id="agenda"
+  class="relative z-[1] px-4 sm:px-6 lg:px-14 pt-4 md:pt-8 pb-16 md:pb-20 lg:pb-24"
+  aria-labelledby="agenda-title"
+>
+  <div class="mx-auto max-w-[1040px]">
+    <header class="mb-10 md:mb-12">
+      <p class="font-google text-xs font-bold uppercase tracking-[0.34em] text-nwd-teal">
+        Programa
+      </p>
+      <h2
+        id="agenda-title"
+        class="mt-2.5 font-google text-[clamp(32px,4vw,48px)] font-bold leading-[0.98] tracking-[-0.045em] text-nwd-blue"
+      >
+        Agenda
+      </h2>
+      <p class="mt-4 text-[clamp(14px,1.35vw,17px)] text-[#4b6593]">
+        Sábado 10 de octubre · de 14:30 a 18:15
+      </p>
+    </header>
+
+    <div>
+      {agenda.map((item, index) => (
+        <AgendaItem item={item} index={index} total={agenda.length} />
+      ))}
+    </div>
+  </div>
+</section>
