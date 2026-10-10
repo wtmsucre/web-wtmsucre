@@ -31,6 +31,6 @@ export const NWD26_SECTIONS: NavSection[] = [
   { href: "#sobre-el-evento", label: "Sobre el Evento" },
   { href: "#paquetes", label: "Paquetes" },
   { href: "#agenda", label: "Agenda" },
-  { href: "#organizers", label: "Organizadoras" },
+  { href: "#organizers", label: "Organizers" },
   { href: "#eventos-pasados", label: "Eventos pasados" },
 ]
