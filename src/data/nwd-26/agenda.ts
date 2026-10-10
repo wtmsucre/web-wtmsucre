@@ -1,9 +1,9 @@
 import type { ImageMetadata } from "astro"
-import abbyImg from "@/assets/events/nwd-26/speakers/AbigailAbby.png"
-import anaImg from "@/assets/events/nwd-26/speakers/AnaAngelaCopacalle Ramos.png"
-import jhoselineImg from "@/assets/events/nwd-26/speakers/Jhoseline Terán.jpeg"
-import melvyImg from "@/assets/events/nwd-26/speakers/MelvyRocíoAncietaAlvarado.png"
-import margaretImg from "@/assets/events/nwd-26/speakers/margaret.jpeg"
+import abbyImg from "@/assets/events/nwd-26/speakers/AbigailAbby.webp"
+import anaImg from "@/assets/events/nwd-26/speakers/AnaAngelaCopacalle Ramos.webp"
+import jhoselineImg from "@/assets/events/nwd-26/speakers/Jhoseline Terán.webp"
+import melvyImg from "@/assets/events/nwd-26/speakers/MelvyRocíoAncietaAlvarado.webp"
+import margaretImg from "@/assets/events/nwd-26/speakers/margaret.webp"
 
 export interface AgendaTalk {
   type: "talk"
